@@ -9,61 +9,71 @@
                 <form>
                     <sheet>
                         <div class="oe_button_box" name="button_box"/>
-
                         <!-- Image and Name Section -->
-                        <field name="image" widget="image" class="oe_avatar"/>
-                        <div class="oe_title">
-                            <h1>
-                                <field name="name" default_focus="1" placeholder="Name"/>
-                            </h1>
+                        <div>
+                            <field name="image_1920" widget='image' class="oe_avatar"
+                                   options='{"zoom": true, "preview_image":"image_1920"}'/>
+                            <div class="oe_title">
+                                <h1>
+                                    <field name="name" default_focus="1" placeholder="Name"/>
+                                </h1>
+                            </div>
                         </div>
-
                         <!-- Personal Information Tab -->
                         <group>
-                            <!-- Existing fields -->
-                            <group>
-                                <field name="address"/>
-                                <field name="phone"/>
-                                <field name="email"/>
-                            </group>
-                            <group><field name="date_of_birth"/>
-                                <field name="gender"/></group>
-
+                            <div class="oe_section">
+                                <group name="personal_info">
+                                    <field name="address" placeholder="Address" string="Address"/>
+                                    <field name="phone" placeholder="Phone" string="Phone"/>
+                                    <field name="email" placeholder="Email" string="Email"/>
+                                    <field name="date_of_birth" placeholder="Date of Birth" string="Date of Birth"/>
+                                    <field name="gender" placeholder="Gender" string="Gender"/>
+                                </group>
+                            </div>
                         </group>
-
                         <!-- Medical History and Contacts Tabs -->
                         <notebook>
                             <!-- Medical History Tab -->
                             <page string="Medical History">
                                 <group>
                                     <!-- New fields for Medical History -->
-                                    <field name="allergies"/>
-                                    <field name="medications"/>
-                                    <field name="health_conditions"/>
+                                    <field name="allergies" placeholder="Allergies" string="Allergies"/>
+                                    <field name="medications" placeholder="Medications" string="Medications"/>
                                 </group>
                             </page>
-                            <!-- Dental Records Tab -->
 
+                            <!-- Dental Records Tab -->
                             <page string="Dental Records">
                                 <group>
                                     <!-- Dental Records Fields -->
-                                    <field name="oral_health_information"/>
-                                    <field name="past_treatments"/>
-                                    <field name="x_rays"/>
-                                    <field name="photos"/>
-                                    <field name="treatment_plans"/>
-                                    <field name="notes" widget="text"/>
-                                    <field name="progress_updates" widget="text"/>
+                                    <group>
+                                        <field name="oral_health_information" placeholder="Oral Health Information"
+                                               string="Oral Health Information"/>
+                                        <field name="past_treatments" placeholder="Past Treatments"
+                                               string="Past Treatments"/>
+                                        <field name="treatment_plans" placeholder="Treatment Plans"
+                                               string="Treatment Plans"/>
+                                        <field name="progress_updates" widget="text" placeholder="Progress Updates"
+                                               string="Progress Updates"/>
+                                        <field name="notes" widget="text" placeholder="Notes" string="Notes"/>
+                                    </group>
 
-                                    <!-- Dental Records Image Upload -->
-                                    <field name="dental_images" widget="image" class="oe_avatar"/>
+                                    <!-- Image Fields -->
+                                    <group class="oe_avatar_images_group">
+                                        <div class="oe_avatar_image">
+                                            <label for="x_rays" class="oe_form_label">X-Rays</label>
+                                            <field name="x_rays" widget="image"/>
+                                        </div>
+                                        <div class="oe_avatar_image">
+                                            <label for="dental_images" class="oe_form_label">Dental Images</label>
+                                            <field name="dental_images" widget="image"/>
+                                        </div>
+                                    </group>
                                 </group>
                             </page>
                         </notebook>
-
                     </sheet>
                 </form>
-
             </field>
         </record>
 
@@ -74,12 +84,12 @@
             <field name="model">dentist.patient</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name" string="Patient Name"/>
-                    <field name="date_of_birth"/>
+                    <field name="name"/>
+                    <field name="address"/>
                     <field name="phone"/>
                     <field name="email"/>
+                    <field name="date_of_birth"/>
                     <field name="gender"/>
-                    <field name="address"/>
                     <field name="create_date"/>
                 </tree>
             </field>
@@ -94,17 +104,36 @@
                     <field name="name"/>
                     <field name="date_of_birth"/>
                     <field name="phone"/>
-                    <field name="image"/>
+                    <field name="image_1920"/>
+                    <field name="email"/>
+                    <field name="address"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div class="oe_kanban_content">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
                                 <div class="o_kanban_image">
-                                    <img t-att-src="kanban_image('dentist.patient', 'image', record.id.raw_value, placeholder)"/>
+                                    <field name="image_1920" widget="image" class="o_kanban_image_fill_left"
+                                           options="{'zoom': true, 'zoom_delay': 1000}"/>
                                 </div>
-                                <div class="o_kanban_details">
-                                    <strong><field name="name"/></strong>
-                                    <div><field name="date_of_birth"/></div>
-                                    <div><field name="phone"/></div>
+                                <div class="oe_kanban_details">
+                                    <strong class="oe_kanban_title" title=""><field name="name"/></strong>
+                                    <div class="oe_kanban_content">
+                                        <div class="oe_kanban_phone">
+                                            <i class="fa fa-phone"/>
+                                            <field name="phone"/>
+                                        </div>
+                                        <div class="oe_kanban_dob">
+                                            <i class="fa fa-calendar"/>
+                                            <field name="date_of_birth"/>
+                                        </div>
+                                        <div class="oe_kanban_email">
+                                            <i class="fa fa-envelope"/>
+                                            <field name="email"/>
+                                        </div>
+                                        <div class="oe_kanban_address">
+                                            <i class="fa fa-map-marker"/>
+                                            <field name="address"/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </t>
@@ -113,6 +142,7 @@
                 </kanban>
             </field>
         </record>
+
 
         <!-- Define the patient action -->
         <record id="action_patient" model="ir.actions.act_window">
