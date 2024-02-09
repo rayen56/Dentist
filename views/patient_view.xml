@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Define the main patient form view -->
+       <record id="view_patient_form" model="ir.ui.view">
+            <field name="name">dentist.patient.form</field>
+            <field name="model">dentist.patient</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+
+                        <!-- Personal Information Tab -->
+                            <group>
+                                <!-- Existing fields -->
+                                <field name="name"/>
+                                <field name="address"/>
+                                <field name="phone"/>
+                                <field name="email"/>
+                                <field name="date_of_birth"/>
+                                <field name="gender"/>
+                            </group>
+<notebook>
+                        <!-- Medical History Tab -->
+                        <page string="Medical History">
+                            <group>
+                                <!-- New fields for Medical History -->
+                                <field name="allergies"/>
+                                <field name="medications"/>
+                                <field name="health_conditions"/>
+                            </group>
+                        </page>
+
+                        <!-- Contacts Tab (Inspired by Employee Module) -->
+                        <page string="Contacts">
+                            <group>
+                                <field name="phone"/>
+                                <field name="phone"/>
+                            </group>
+                        </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+
+        <!-- Define the patient tree view -->
+        <record id="view_patient_tree" model="ir.ui.view">
+            <field name="name">dentist.patient.tree</field>
+            <field name="model">dentist.patient</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" string="Patient Name"/>
+                    <field name="date_of_birth"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+                    <field name="gender"/>
+                    <field name="address"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Define the patient Kanban view -->
+        <record id="view_dentist_patient_kanban" model="ir.ui.view">
+    <field name="name">dentist.patient.kanban</field>
+    <field name="model">dentist.patient</field>
+    <field name="arch" type="xml">
+        <kanban class="o_kanban_mobile">
+            <field name="name"/>
+            <field name="date_of_birth"/>
+            <field name="phone"/>
+            <field name="image"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_content">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('dentist.patient', 'image', record.id.raw_value, placeholder)"/>
+                        </div>
+                        <div class="o_kanban_details">
+                            <strong><field name="name"/></strong>
+                            <div><field name="date_of_birth"/></div>
+                            <div><field name="phone"/></div>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+            <field name="id" attrs="{'invisible': True}"/>
+        </kanban>
+    </field>
+</record>
+
+        <!-- Define the patient action -->
+        <record id="action_patient" model="ir.actions.act_window">
+            <field name="name">Patients</field>
+            <field name="res_model">dentist.patient</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+
+        <!-- Define the top-level Dentist menu -->
+        <menuitem id="menu_dentist_root_menu" name="Dentist" sequence="1"/>
+
+        <!-- Define the Patients submenu under Dentist -->
+        <menuitem id="menu_patient" name="Patients" parent="menu_dentist_root_menu" action="action_patient"/>
+    </data>
+</odoo>
