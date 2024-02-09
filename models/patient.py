@@ -31,4 +31,5 @@ class DentistPatient(models.Model):
     progress_updates = fields.Text(string='Progress Updates')
 
     # Image Field for Dental Images
+
     dental_images = fields.Binary(string='Dental Images', attachment=True)
