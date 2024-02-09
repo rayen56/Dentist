@@ -55,12 +55,16 @@
                                     <group>
                                         <field name="x_rays" widget="image"/>
                                         <field name="dental_images" widget="image" class=" oe_avatar " />
+                                         <field name="dental_images" widget="image" class=" oe_avatar " />
                                     </group>
+
                                 </group>
                             </page>
                         </notebook>
+
                     </sheet>
                 </form>
+
             </field>
         </record>
 
