@@ -19,3 +19,4 @@ class DentistPatient(models.Model):
     allergies = fields.Text(string='Allergies')
     medications = fields.Text(string='Medications')
     health_conditions = fields.Text(string='Health Conditions')
+    test = fields.Float()
