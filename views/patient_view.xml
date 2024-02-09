@@ -39,31 +39,28 @@
                                     <!-- New fields for Medical History -->
                                     <field name="allergies"/>
                                     <field name="medications"/>
-                                    <field name="health_conditions"/>
                                 </group>
                             </page>
                             <!-- Dental Records Tab -->
-
                             <page string="Dental Records">
                                 <group>
                                     <!-- Dental Records Fields -->
-                                    <field name="oral_health_information"/>
-                                    <field name="past_treatments"/>
-                                    <field name="x_rays"/>
-                                    <field name="photos"/>
-                                    <field name="treatment_plans"/>
-                                    <field name="notes" widget="text"/>
-                                    <field name="progress_updates" widget="text"/>
-
-                                    <!-- Dental Records Image Upload -->
-                                    <field name="dental_images" widget="image" class="oe_avatar"/>
+                                    <group>
+                                        <field name="oral_health_information"/>
+                                        <field name="past_treatments"/>
+                                        <field name="treatment_plans"/>
+                                        <field name="progress_updates" widget="text"/>
+                                        <field name="notes" widget="text"/>
+                                    </group>
+                                    <group>
+                                        <field name="x_rays" widget="image"/>
+                                        <field name="dental_images" widget="image" class=" oe_avatar " />
+                                    </group>
                                 </group>
                             </page>
                         </notebook>
-
                     </sheet>
                 </form>
-
             </field>
         </record>
 

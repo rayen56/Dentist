@@ -4,6 +4,7 @@ class DentistPatient(models.Model):
     _name = 'dentist.patient'
     _description = 'Dentist Patient'
 
+
     name = fields.Char(string='Patient Name', required=True)
     address = fields.Text(string="Address")
     phone = fields.Char(string='Phone')
@@ -19,7 +20,6 @@ class DentistPatient(models.Model):
     #Medical History Fields
     allergies = fields.Text(string='Allergies')
     medications = fields.Text(string='Medications')
-    health_conditions = fields.Text(string='Health Conditions')
 
     # Dental Records Fields
     oral_health_information = fields.Text(string='Oral Health Information')
