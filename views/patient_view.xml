@@ -2,48 +2,70 @@
 <odoo>
     <data>
         <!-- Define the main patient form view -->
-       <record id="view_patient_form" model="ir.ui.view">
+        <record id="view_patient_form" model="ir.ui.view">
             <field name="name">dentist.patient.form</field>
             <field name="model">dentist.patient</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                        <div class="oe_button_box" name="button_box"/>
+
+                        <!-- Image and Name Section -->
+                        <field name="image" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" default_focus="1" placeholder="Name"/>
+                            </h1>
+                        </div>
 
                         <!-- Personal Information Tab -->
+                        <group>
+                            <!-- Existing fields -->
                             <group>
-                                <!-- Existing fields -->
-                                <field name="name"/>
                                 <field name="address"/>
                                 <field name="phone"/>
                                 <field name="email"/>
-                                <field name="date_of_birth"/>
-                                <field name="gender"/>
                             </group>
-<notebook>
-                        <!-- Medical History Tab -->
-                        <page string="Medical History">
-                            <group>
-                                <!-- New fields for Medical History -->
-                                <field name="allergies"/>
-                                <field name="medications"/>
-                                <field name="health_conditions"/>
-                            </group>
-                        </page>
+                            <group><field name="date_of_birth"/>
+                                <field name="gender"/></group>
 
-                        <!-- Contacts Tab (Inspired by Employee Module) -->
-                        <page string="Contacts">
-                            <group>
-                                <field name="phone"/>
-                                <field name="phone"/>
-                            </group>
-                        </page>
+                        </group>
+
+                        <!-- Medical History and Contacts Tabs -->
+                        <notebook>
+                            <!-- Medical History Tab -->
+                            <page string="Medical History">
+                                <group>
+                                    <!-- New fields for Medical History -->
+                                    <field name="allergies"/>
+                                    <field name="medications"/>
+                                    <field name="health_conditions"/>
+                                </group>
+                            </page>
+                            <!-- Dental Records Tab -->
+
+                            <page string="Dental Records">
+                                <group>
+                                    <!-- Dental Records Fields -->
+                                    <field name="oral_health_information"/>
+                                    <field name="past_treatments"/>
+                                    <field name="x_rays"/>
+                                    <field name="photos"/>
+                                    <field name="treatment_plans"/>
+                                    <field name="notes" widget="text"/>
+                                    <field name="progress_updates" widget="text"/>
+
+                                    <!-- Dental Records Image Upload -->
+                                    <field name="dental_images" widget="image" class="oe_avatar"/>
+                                </group>
+                            </page>
                         </notebook>
+
                     </sheet>
                 </form>
+
             </field>
         </record>
-
-
 
 
         <!-- Define the patient tree view -->
@@ -65,32 +87,32 @@
 
         <!-- Define the patient Kanban view -->
         <record id="view_dentist_patient_kanban" model="ir.ui.view">
-    <field name="name">dentist.patient.kanban</field>
-    <field name="model">dentist.patient</field>
-    <field name="arch" type="xml">
-        <kanban class="o_kanban_mobile">
-            <field name="name"/>
-            <field name="date_of_birth"/>
-            <field name="phone"/>
-            <field name="image"/>
-            <templates>
-                <t t-name="kanban-box">
-                    <div class="oe_kanban_content">
-                        <div class="o_kanban_image">
-                            <img t-att-src="kanban_image('dentist.patient', 'image', record.id.raw_value, placeholder)"/>
-                        </div>
-                        <div class="o_kanban_details">
-                            <strong><field name="name"/></strong>
-                            <div><field name="date_of_birth"/></div>
-                            <div><field name="phone"/></div>
-                        </div>
-                    </div>
-                </t>
-            </templates>
-            <field name="id" attrs="{'invisible': True}"/>
-        </kanban>
-    </field>
-</record>
+            <field name="name">dentist.patient.kanban</field>
+            <field name="model">dentist.patient</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="name"/>
+                    <field name="date_of_birth"/>
+                    <field name="phone"/>
+                    <field name="image"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_image">
+                                    <img t-att-src="kanban_image('dentist.patient', 'image', record.id.raw_value, placeholder)"/>
+                                </div>
+                                <div class="o_kanban_details">
+                                    <strong><field name="name"/></strong>
+                                    <div><field name="date_of_birth"/></div>
+                                    <div><field name="phone"/></div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                    <field name="id" attrs="{'invisible': True}"/>
+                </kanban>
+            </field>
+        </record>
 
         <!-- Define the patient action -->
         <record id="action_patient" model="ir.actions.act_window">
