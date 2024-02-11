@@ -15,7 +15,7 @@
                                    options='{"zoom": true, "preview_image":"image_1920"}'/>
                             <div class="oe_title">
                                 <h1>
-                                    <field name="name" default_focus="1" placeholder="Name"/>
+                                    <field name="name" default_focus="1" placeholder="Enter the name of the patient"/>
                                 </h1>
                             </div>
                         </div>
@@ -26,7 +26,8 @@
                                     <field name="address" placeholder="Address" string="Address"/>
                                     <field name="phone" placeholder="Phone" string="Phone"/>
                                     <field name="email" placeholder="Email" string="Email"/>
-                                    <field name="date_of_birth" placeholder="Date of Birth" string="Date of Birth"/>
+                                    <field name="date_of_birth" placeholder="Enter the patient's date of birth"
+                                           string="Date of Birth"/>
                                     <field name="gender" placeholder="Gender" string="Gender"/>
                                 </group>
                             </div>
@@ -46,7 +47,7 @@
                             <page string="Dental Records">
                                 <group>
                                     <!-- Dental Records Fields -->
-                                    <group>
+                                    <group string="Health Condition">
                                         <field name="oral_health_information" placeholder="Oral Health Information"
                                                string="Oral Health Information"/>
                                         <field name="past_treatments" placeholder="Past Treatments"
@@ -59,23 +60,36 @@
                                     </group>
 
                                     <!-- Image Fields -->
-                                    <group class="oe_avatar_images_group">
+                                    <group string="Images" class="oe_avatar_images_group">
                                         <div class="oe_avatar_image">
                                             <label for="x_rays" class="oe_form_label">X-Rays</label>
-                                            <field name="x_rays" widget="image"/>
+                                            <field name="x_rays" widget="image" options="{'size': (200, 200)}"/>
                                         </div>
                                         <div class="oe_avatar_image">
                                             <label for="dental_images" class="oe_form_label">Dental Images</label>
-                                            <field name="dental_images" widget="image"/>
+                                            <field name="dental_images" widget="image" options="{'size': (200, 200)}"/>
                                         </div>
                                     </group>
                                 </group>
                             </page>
                         </notebook>
                     </sheet>
+                     <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids" />
+                    </div>
+                    <searchpanel>
+                <filter name="name" string="Patient Name"/>
+                <filter name="phone" string="Phone"/>
+                <filter name="email" string="Email"/>
+            </searchpanel>
                 </form>
             </field>
         </record>
+
+
+
 
 
         <!-- Define the patient tree view -->
@@ -149,6 +163,7 @@
             <field name="name">Patients</field>
             <field name="res_model">dentist.patient</field>
             <field name="view_mode">tree,form,kanban</field>
+
         </record>
 
         <!-- Define the top-level Dentist menu -->

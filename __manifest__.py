@@ -4,7 +4,7 @@
     'category': 'Health',
     'summary': 'Manage Dentist Appointments',
     'author': 'Your Name',
-    'depends': ['base'],
+    'depends': ['mail'],
     'data': [
         'views/patient_view.xml',
         'security/ir.model.access.csv',
