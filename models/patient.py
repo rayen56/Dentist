@@ -21,9 +21,20 @@ class DentistPatient(models.Model):
     # Personal Image
     image_1920 = fields.Image(string='Image')
 
-    # Medical History Fields
-    allergies = fields.Text(string='Allergies', track_visibility='onchange')
-    medications = fields.Text(string='Medications', track_visibility='onchange')
+    # Medical History Fields with predefined choices
+    allergies = fields.Selection([
+        ('none', 'None'),
+        ('seasonal', 'Seasonal Allergies'),
+        ('food', 'Food Allergies'),
+        ('medication', 'Medication Allergies')],
+        string='Allergies', track_visibility='onchange', default='none')
+
+    medications = fields.Selection([
+        ('none', 'None'),
+        ('painkiller', 'Painkillers'),
+        ('antibiotic', 'Antibiotics'),
+        ('vitamins', 'Vitamins')],
+        string='Medications', track_visibility='onchange', default='none')
 
     # Dental Records Fields
     oral_health_information = fields.Text(string='Oral Health Information', track_visibility='onchange')
@@ -35,3 +46,7 @@ class DentistPatient(models.Model):
     # Image Fields for Dental Records
     x_rays = fields.Image(string='X-Rays', help='Upload X-Ray images', track_visibility='onchange')
     dental_images = fields.Image(string='Dental Images', attachment=True, help='Upload dental images', track_visibility='onchange')
+
+
+    # Appointments
+    appointments = fields.One2many('dentist.appointment', 'patient_id', string='Appointments', track_visibility='onchange')

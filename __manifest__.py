@@ -8,6 +8,8 @@
     'data': [
         'views/patient_view.xml',
         'security/ir.model.access.csv',
+        'views/appointment_view.xml',
+        'Data/sequence.xml',
     ],
     'installable': True,
     'application': True,

@@ -37,12 +37,11 @@
                             <!-- Medical History Tab -->
                             <page string="Medical History">
                                 <group>
-                                    <!-- New fields for Medical History -->
-                                    <field name="allergies" placeholder="Allergies" string="Allergies"/>
-                                    <field name="medications" placeholder="Medications" string="Medications"/>
+                                    <!--  Medical History -->
+                                    <field name="allergies"/>
+                                    <field name="medications"/>
                                 </group>
                             </page>
-
                             <!-- Dental Records Tab -->
                             <page string="Dental Records">
                                 <group>
@@ -58,7 +57,6 @@
                                                string="Progress Updates"/>
                                         <field name="notes" widget="text" placeholder="Notes" string="Notes"/>
                                     </group>
-
                                     <!-- Image Fields -->
                                     <group string="Images" class="oe_avatar_images_group">
                                         <div class="oe_avatar_image">
@@ -72,24 +70,28 @@
                                     </group>
                                 </group>
                             </page>
+                            <!-- Appointments Tab -->
+                            <page string="Appointments">
+                                <group>
+                                    <!-- Define your appointments fields here -->
+                                    <field name="appointments" widget="one2many" options="{'quick_create': 'form'}"/>
+                                </group>
+                            </page>
                         </notebook>
                     </sheet>
-                     <div class="oe_chatter">
+                    <div class="oe_chatter">
                         <field name="message_follower_ids" groups="base.group_user"/>
                         <field name="activity_ids"/>
-                        <field name="message_ids" />
+                        <field name="message_ids"/>
                     </div>
                     <searchpanel>
-                <filter name="name" string="Patient Name"/>
-                <filter name="phone" string="Phone"/>
-                <filter name="email" string="Email"/>
-            </searchpanel>
+                        <filter name="name" string="Patient Name"/>
+                        <filter name="phone" string="Phone"/>
+                        <filter name="email" string="Email"/>
+                    </searchpanel>
                 </form>
             </field>
         </record>
-
-
-
 
 
         <!-- Define the patient tree view -->
