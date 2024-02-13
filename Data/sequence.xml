@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <!-- Define the sequence for the dentist.appointment model -->
+        <record id="sequence_dentist_appointment" model="ir.sequence">
+            <field name="name">dentist.appointment</field>
+            <field name="code">dentist.appointment</field>
+            <field name="prefix">AP</field>
+            <field name="padding">4</field>
+        </record>
+    </data>
+</odoo>
