@@ -10,6 +10,8 @@
         'security/ir.model.access.csv',
         'views/appointment_view.xml',
         'Data/sequence.xml',
+        'views/dentist_treatment_view.xml',
+        'views/teeth_view.xml',
     ],
     'installable': True,
     'application': True,
