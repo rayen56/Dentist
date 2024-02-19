@@ -84,20 +84,14 @@
                         <field name="activity_ids"/>
                         <field name="message_ids"/>
                     </div>
+                    <searchpanel>
+                        <filter name="name" string="Patient Name"/>
+                        <filter name="phone" string="Phone"/>
+                        <filter name="email" string="Email"/>
+                    </searchpanel>
                 </form>
             </field>
         </record>
-         <record id="view_patient_search" model="ir.ui.view">
-            <field name="name">dentist.patient.search</field>
-            <field name="model">dentist.patient</field>
-            <field name="arch" type="xml" >
-                <search>
-                    <field name="name"  string="Patient Name"/>
-                </search>
-            </field>
-        </record>
-
-
 
 
         <!-- Define the patient tree view -->

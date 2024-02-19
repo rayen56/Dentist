@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="treatment_form" model="ir.ui.view">
+            <field name="name">treatment.form</field>
+            <field name="model">dentist.treatment</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <header>
+                            <button string="Show Tooth Custom" type="object" class="oe_highlight"
+                                    name="action_show_tooth_custom"/>
+                        </header>
+                        <group>
+                            <!-- Fields to be displayed on the form -->
+                            <field name="name"/>
+                            <field name="patient_ids" widget="many2many_tags"/>
+                            <field name="description"/>
+                            <field name="duration"/>
+                            <field name="cost"/>
+                            <field name="notes"/>
+                            <field name="selected_teeth" widget="many2many_tags"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="treatment_tree" model="ir.ui.view">
+            <field name="name">treatment.tree</field>
+            <field name="model">dentist.treatment</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record id="action" model="ir.actions.act_window">
+            <field name="name">treatment</field>
+            <field name="res_model">dentist.treatment</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="treatment_menu" name="Treatment" parent="menu_dentist_root_menu"
+                  action="action"/>
+    </data>
+</odoo>

@@ -1,0 +1,18 @@
+/* static/src/css/custom.css */
+.tooth_selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Adjust the gap between tooth buttons as needed */
+}
+
+.tooth_button {
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.tooth_button:hover {
+    background-color: #f0f0f0;
+}

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_teeth_form" model="ir.ui.view">
+            <field name="name">dentist.tooth.form</field>
+            <field name="model">dentist.tooth</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+
+                        <group>
+                            <group>
+                                <field name="universal_number"/>
+                                <field name="name"/>
+                                <field name="tooth_type" widget="selection"/>
+                                <field name="position" widget="selection"/>
+                            </group>
+                            <group>
+                                <field name="image" widget="image"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_teeth_tree" model="ir.ui.view">
+            <field name="name">teeth.tree</field>
+            <field name="model">dentist.tooth</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="universal_number"/>
+                    <field name="name"/>
+                    <field name="image" widget="image"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_tooth_kanban" model="ir.ui.view">
+            <field name="name">dentist.tooth.kanban</field>
+            <field name="model">dentist.tooth</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click oe_kanban_card_oe_kanban_global_click oe_kanban_standard_scale oe_kanban_record">
+                                <div class="o_kanban_image ">
+                                    <field name="image" widget="image" class="oe_kanban_image_fill_left"
+                                           options="{'size': [70, 120]}"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong><field name="name"/></strong>
+                                    <div>
+                                        <field name="universal_number"/>
+                                        <field name="tooth_type"/>
+                                    </div>
+                                    <div>
+                                        <field name="position"/>
+                                    </div>
+                                </div>
+                                <div class="oe_kanban_footer">
+                                    <button class="oe_kanban_action oe_kanban_button_print">
+                                        Print Information
+                                    </button>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+       <!-- <record id="action_tooth_demo" model="ir.actions.client">
+            <field name="name">Tooth Custom</field>
+            <field name="tag">tooth_cust</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_tooth_demo" action="action_tooth_demo" name="Tooth Custom" parent="menu_dentist_root_menu"/>
+-->
+
+        <record id="action_teeth" model="ir.actions.act_window">
+            <field name="name">teeth</field>
+            <field name="res_model">dentist.tooth</field>
+            <field name="view_mode">tree,form,kanban</field>
+
+        </record>
+        <menuitem id="menu_teeth" name="Teeth" parent="menu_dentist_root_menu"
+                  action="action_teeth"/>
+
+    </data>
+</odoo>

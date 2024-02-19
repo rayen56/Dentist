@@ -36,7 +36,8 @@
                                         <div class="oe_kanban_state">
                                             <i class="fa fa-trash" t-if="record.state.raw_value === 'draft'"/>
                                             <i class="fa fa-check-circle-o" t-if="record.state.raw_value === 'done'"/>
-                                            <i class="fa fa-calendar-check-o" t-if="record.state.raw_value === 'confirmed'"/>
+                                            <i class="fa fa-calendar-check-o"
+                                               t-if="record.state.raw_value === 'confirmed'"/>
                                             <i class="fa fa-times" t-if="record.state.raw_value === 'cancelled'"/>
                                             <field name="state"/>
                                         </div>
@@ -57,17 +58,21 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                        <header>
+                            <field name="state" widget="statusbar" nolabel="1" options="{'clickable': True}"
+                                   statusbar_visible="draft,cancelled,confirmed,done" class="o_statusbar_header"/>
+                        </header>
                         <group>
-                            <group>
+                            <group class="o_inner_group" string="Appointment Details">
+                                <label for="name" class="oe_form_label">Appointment Details</label>
                                 <field name="name" readonly="1"/>
                                 <field name="appointment_type" string="Appointment Type"/>
                                 <field name="appointment_date" string="Appointment Date"/>
                                 <field name="appointment_end_date" string="End Date"/>
                                 <field name="patient_id" string="Patient"/>
                             </group>
-                            <group>
+                            <group class="o_inner_group" string="Additional Information">
                                 <field name="doctor_id" string="Assigned Doctor"/>
-                                <field name="state" string="Status"/>
                                 <field name="notes" string="Notes"/>
                             </group>
                         </group>
@@ -78,6 +83,7 @@
                         <field name="message_ids"/>
                     </div>
                 </form>
+
             </field>
         </record>
 
