@@ -1,18 +1,49 @@
-/* static/src/css/custom.css */
-.tooth_selection {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Adjust the gap between tooth buttons as needed */
-}
 
 .tooth_button {
-    text-align: center;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: none;
     cursor: pointer;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
+    transition: all 0.2s ease;
 }
 
-.tooth_button:hover {
-    background-color: #f0f0f0;
+/* Tooth image container */
+.tooth_selection {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr); /* 16 columns for first 16 images */
+    grid-gap: 10px; /* Adjust spacing as needed */
+    justify-content: space-between;
+}
+
+/* Media query for responsive wrapping after 16 images */
+@media (max-width: 768px) {
+    /* Adjust breakpoint as needed */
+    .tooth_selection {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Responsive layout */
+    }
+}
+
+/* Tooth button styles */
+.tooth_button img {
+    max-width: 100%;
+    max-height: 80px; /* Adjust height as needed */
+    object-fit: cover; /* Ensure image fills button without distortion */
+}
+
+.tooth_selection img {
+    transition: transform 0.5s ease; /* Smooth hover image scaling */
+}
+
+/* Hover effect for unselected teeth */
+.tooth_button:hover:not(.selected) {
+    transform: scale(1.05); /* Slight scale on hover */
+}
+
+/* Selected tooth style */
+.tooth_button.selected {
+    background-color: #7c7bad52; /* Green for selected */
+    color: white;
+    border: 2px solid #7c7bad52;
+    border-radius: 5px;
 }

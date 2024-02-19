@@ -10,6 +10,7 @@
             <br></br>
             <div>
                 <div class="table_view"></div>
+                <button class="btn btn-primary save_button">Save Selected Teeth</button>
             </div>
         </div>
     </t>
@@ -17,7 +18,7 @@
     <div class="tooth_selection">
         <t t-foreach="tooth_lines" t-as="data">
             <button class="tooth_button" t-att-data-id="data['id']" t-att-data-name="data['name']" t-att-data-image="data['image']">
-                <img t-if="data['image']" t-att-src="'data:image/png;base64,' + data['image']" style="max-width:100%;"/>
+                <img t-if="data['image']" t-att-src="'data:image/png;base64,' + data['image']" />
             </button>
         </t>
     </div>

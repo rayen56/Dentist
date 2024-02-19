@@ -172,6 +172,6 @@
         <menuitem id="menu_dentist_root_menu" name="Dentist" sequence="1"/>
 
         <!-- Define the Patients submenu under Dentist -->
-        <menuitem id="menu_patient" name="Patients" parent="menu_dentist_root_menu" action="action_patient"/>
+            <menuitem id="menu_patient" name="Patients" parent="menu_dentist_root_menu" action="action_patient"/>
     </data>
 </odoo>

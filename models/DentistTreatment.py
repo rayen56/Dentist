@@ -12,7 +12,7 @@ class Treatment(models.Model):
     cost = fields.Float(string='Treatment Cost', help="Estimated cost of the treatment")
     notes = fields.Text(string='Treatment Notes', help="Additional information about the treatment")
 
-    selected_teeth = fields.Many2many('dentist.tooth', string='Selected Teeth')
+    selected_teeth = fields.Text(string='Selected Teeth')  # Change Many2many to Text
 
     def action_show_tooth_custom(self):
         patient_names = ', '.join(self.patient_ids.mapped('name'))
