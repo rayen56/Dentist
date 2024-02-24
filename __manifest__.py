@@ -10,10 +10,11 @@
         'security/ir.model.access.csv',
         'views/appointment_view.xml',
         'Data/sequence.xml',
+        'Data/procedure_data.xml',
         'views/dentist_treatment_view.xml',
         'views/teeth_view.xml',
         'views/assets.xml',
-
+        'views/procedure_view.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'installable': True,

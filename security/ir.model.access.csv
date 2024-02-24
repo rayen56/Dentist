@@ -3,3 +3,4 @@ access_dentist_patient,Dentist Patient,model_dentist_patient,base.group_user,1,1
 access_dentist_appointment,Dentist Appointment,model_dentist_appointment,base.group_user,1,1,1,1
 access_dentist_treatment,Dentist Treatment,model_dentist_treatment,base.group_user,1,1,1,1
 access_dentist_tooth,Dentist Tooth,model_dentist_tooth,base.group_user,1,1,1,1
+access_dentist_procedure,Dentist Procedure,model_dentist_procedure,base.group_user,1,1,1,1

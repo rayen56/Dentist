@@ -1,27 +1,76 @@
 <templates>
     <t t-name="ToothCust">
-        <div>
-            <div>
-                <h3>
-                    Tooth Custom
-                </h3>
+        <div class="container pt-4 pb-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Tooth Custom</h3>
+                </div>
             </div>
-            <div class="filter_view_tb"></div>
-            <br></br>
-            <div>
-                <div class="table_view"></div>
-                <button class="btn btn-primary save_button">Save Selected Teeth</button>
+            <div class="row">
+                <div class="col-md-4 order-md-2"><div class="card shadow-sm border-0 rounded-3"><div
+                        class="card-body py-4">
+                    <h5>Procedures</h5>
+                    <div class="Procedure_table_view"></div>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-8 order-2">
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-body py-4">
+                            <h5>Tooth</h5>
+                            <button class="button btn btn-outline-primary  save-button ">Save</button>
+
+                            <div class="py-2"></div> <div class="table_view tooth-table"></div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-success mark-completed-button mr-2">Mark as Completed</button>
+                            <button class="btn btn-warning mark-in-progress-button">Mark as In Progress</button>
+                        </div>
+                    </div>
+                    <div class="treatment_table_view"></div>
+                </div>
             </div>
         </div>
     </t>
-     <t t-name="ToothTable">
-    <div class="tooth_selection">
-        <t t-foreach="tooth_lines" t-as="data">
-            <button class="tooth_button" t-att-data-id="data['id']" t-att-data-name="data['name']" t-att-data-image="data['image']">
-                <img t-if="data['image']" t-att-src="'data:image/png;base64,' + data['image']" />
-            </button>
+    <t t-name="ToothTable">
+        <div class="tooth_selection">
+            <!-- Render dentist.tooth data -->
+            <t t-if="tooth_lines">
+                <t t-foreach="tooth_lines" t-as="data">
+                    <button class="tooth_button btn" t-att-data-id="data['id']" t-att-data-name="data['name']"
+                            t-att-data-image="data['image']">
+                        <img t-if="data['image']" t-att-src="'data:image/png;base64,' + data['image']"/>
+                    </button>
+                </t>
+            </t>
+        </div>
+    </t>
+    <t t-name="ProcedureTable">
+        <t t-if="procedure_lines">
+            <t t-foreach="procedure_lines" t-as="data">
+                <button class="procedure_button btn btn-outline-dark shadow-sm border-0 rounded-3 mb-2"
+                        t-att-data-id="data['id']" t-att-data-name="data['name']" t-att-data-cost="data['cost']">
+                    <t t-esc="data['display_name']"/> - Cost: <t t-esc="data['cost']"/>
+                </button>
+            </t>
         </t>
-    </div>
-</t>
+    </t>
+    <t t-name="TreatmentTable">
+        <div class="tooth-treatments">
+            <t t-if="treatment_lines.length">
+                <t t-foreach="treatment_lines" t-as="treatment">
+                    <div class="tooth-treatment">
+                        <h6 t-esc="'Tooth ID: ' + treatment.id"/>
+                        <p><strong>Completed Procedure:</strong> <t t-esc="treatment.completed_procedure"/></p>
+                        <p><strong>Progress Procedure:</strong> <t t-esc="treatment.progress_procedure"/></p>
+                        <p><strong>Treatment Name:</strong> <t t-esc="treatment.name"/></p>
+                        <p><strong>Description:</strong> <t t-esc="treatment.description"/></p>
+                        <p><strong>Duration:</strong> <t t-esc="treatment.duration"/> minutes</p>
+                        <p><strong>Notes:</strong> <t t-esc="treatment.notes"/></p>
+                    </div>
+                </t>
+            </t>
+        </div>
+    </t>
 
 </templates>

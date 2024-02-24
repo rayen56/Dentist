@@ -19,6 +19,8 @@ class Tooth(models.Model):
     treatment_ids = fields.Many2many('dentist.treatment', string='Treatments')
 
 
+
+
     @api.model
     def get_tooth_data(self):
         # Use search_read to fetch data including 'image' field

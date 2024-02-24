@@ -72,17 +72,8 @@
             </field>
         </record>
 
-
-       <!-- <record id="action_tooth_demo" model="ir.actions.client">
-            <field name="name">Tooth Custom</field>
-            <field name="tag">tooth_cust</field>
-            <field name="target">new</field>
-        </record>
-        <menuitem id="menu_tooth_demo" action="action_tooth_demo" name="Tooth Custom" parent="menu_dentist_root_menu"/>
--->
-
         <record id="action_teeth" model="ir.actions.act_window">
-            <field name="name">teeth</field>
+            <field name="name">Teeth</field>
             <field name="res_model">dentist.tooth</field>
             <field name="view_mode">tree,form,kanban</field>
 
