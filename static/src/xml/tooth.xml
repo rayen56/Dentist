@@ -22,22 +22,25 @@
 
                             <div class="py-2"></div> <div class="table_view tooth-table"></div>
                         </div>
-                        <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-center my-4">
                             <button class="btn btn-success mark-completed-button mr-2">Mark as Completed</button>
                             <button class="btn btn-warning mark-in-progress-button">Mark as In Progress</button>
                         </div>
                     </div>
-                    <div class="treatment_table_view"></div>
+                    <div class="py-4">
+                        <div class="treatment_table_view"></div>
+                        <div class="treatment-stats"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </t>
     <t t-name="ToothTable">
         <div class="tooth_selection">
-            <!-- Render dentist.tooth data -->
             <t t-if="tooth_lines">
                 <t t-foreach="tooth_lines" t-as="data">
                     <button class="tooth_button btn" t-att-data-id="data['id']" t-att-data-name="data['name']"
+                            t-att-data-universal_number="data['universal_number']"
                             t-att-data-image="data['image']">
                         <img t-if="data['image']" t-att-src="'data:image/png;base64,' + data['image']"/>
                     </button>
@@ -58,19 +61,52 @@
     <t t-name="TreatmentTable">
         <div class="tooth-treatments">
             <t t-if="treatment_lines.length">
-                <t t-foreach="treatment_lines" t-as="treatment">
-                    <div class="tooth-treatment">
-                        <h6 t-esc="'Tooth ID: ' + treatment.id"/>
-                        <p><strong>Completed Procedure:</strong> <t t-esc="treatment.completed_procedure"/></p>
-                        <p><strong>Progress Procedure:</strong> <t t-esc="treatment.progress_procedure"/></p>
-                        <p><strong>Treatment Name:</strong> <t t-esc="treatment.name"/></p>
-                        <p><strong>Description:</strong> <t t-esc="treatment.description"/></p>
-                        <p><strong>Duration:</strong> <t t-esc="treatment.duration"/> minutes</p>
-                        <p><strong>Notes:</strong> <t t-esc="treatment.notes"/></p>
-                    </div>
-                </t>
+                <table class="table table-hover table-light">
+                    <thead>
+                        <tr>
+                            <th>Created Date</th>
+                            <th>Universal Number</th>
+                            <th>Procedure</th>
+                            <th>Status</th>
+                            <th>Cost</th>
+                            <th>Action</th>
+                            <!-- Add other headers as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="treatment_lines" t-as="treatment">
+                            <tr>
+                                <td><t t-esc="treatment.create_date"/></td>
+                                <td><t t-esc="treatment.universal_number"/></td>
+                                <td><t t-esc="treatment.procedure"/></td>
+                                <td><t t-esc="treatment.status"/></td>
+                                <td><t t-esc="treatment.cost"/></td>
+                                <td>
+                                    <button class="btn btn-danger remove_tooth_button" t-att-data-id="treatment.id">
+                                        Delete</button>
+                                </td>
+
+                            </tr>
+                        </t>
+                        <tr class="border-0">
+                            <td colspan="4"></td>
+                            <td>Total Cost: <t t-esc="totalCost"/></td>
+                        </tr>
+                    </tbody>
+                </table>
             </t>
         </div>
     </t>
+   <t t-name="TreatmentStats">
+    <div class="treatment-stats">
+        <!-- Add canvas element for the chart -->
+        <canvas t-att-id="'treatmentChart'" width="400" height="200"></canvas>
+        <p>Total Procedures: <span t-esc="totalProceduresCount"/></p>
+        <p>Completed Procedures: <span t-esc="completedProceduresCount"/></p>
+        <p>Progress: <span t-esc="progressPercentage"/>%</p>
+        <p>Total Cost: $<span t-esc="totalCost"/></p>
+        <!-- Add more statistics as needed -->
+    </div>
+</t>
 
 </templates>

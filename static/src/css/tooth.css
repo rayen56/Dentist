@@ -14,6 +14,8 @@
     grid-template-columns: repeat(16, 1fr); /* 16 columns for first 16 images */
     grid-gap: 10px; /* Adjust spacing as needed */
     justify-content: space-between;
+    margin-top: 10px; /* Add space above */
+
 }
 
 /* Media query for responsive wrapping after 16 images */
@@ -39,6 +41,7 @@
 .tooth_button:hover:not(.selected) {
     transform: scale(1.05); /* Slight scale on hover */
 }
+
 /* Selected tooth style */
 .tooth_button.selected {
     color: white;
@@ -55,6 +58,12 @@
     border-bottom-left-radius: 20px;
 
 }
+.tooth_button.removed {
+    border-bottom: 6px solid #ff000087;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+
+}
 
 /* In-progress tooth style */
 .tooth_button.in-progress {
@@ -62,7 +71,11 @@
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
 }
-.modal-lg{
 
+.modal-lg {
     max-width: 70% !important;
+}
+/* Add this style rule to your CSS */
+.total-cost-row {
+    border: none;
 }

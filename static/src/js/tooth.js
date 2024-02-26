@@ -6,443 +6,346 @@ odoo.define('dentist.tooth_cust', function (require) {
     var QWeb = core.qweb;
 
     var ToothCustom = AbstractAction.extend({
-        template: 'ToothCust',
-        events: {
-            'click .tooth_button': '_onToothButtonClick',
-            'click .mark-completed-button': '_onMarkCompletedButtonClick',
-            'click .mark-in-progress-button': '_onMarkInProgressButtonClick',
-            'click .save-button': '_onSaveButtonClick',
-            'click .procedure_button': '_onProcedureButtonClick',
+            template: 'ToothCust',
+            events: {
+                'click .tooth_button': '_onToothButtonClick',
+                'click .mark-completed-button': '_onMarkCompletedButtonClick',
+                'click .mark-in-progress-button': '_onMarkInProgressButtonClick',
+                'click .save-button': '_onSaveButtonClick',
+                'click .close-button': '_onCloseButtonClick',
+                'click .procedure_button': '_onProcedureButtonClick',
+                'click .remove_tooth_button': '_onRemoveToothButtonClick'
+            },
+            init: function (parent, action) {
+                this._super(parent, action);
+                this.selectedTeeth = [];
+                this.selectedProcedures = [];
+                this.treatmentId = action.context.active_id;  // Get treatment ID from the context
+                this.patient = action.context.patient;  // Get patient names from the context
+                this.totalCost = action.context.total_cost;  // Get total cost from the context
+                console.log("total_cost", this.totalCost);
+            },
+            start: function () {
+                var self = this;
+                self.load_data();
+                self.loadTeeth();
+                self.loadTreatmentData();
 
-        },
-        init: function (parent, action) {
-            this._super(parent, action);
-            this.selectedTeeth = []; // Keep track of selected teeth
-            this.completedTeeth = []; // Keep track of completed teeth
-            this.inProgressTeeth = []; // Keep track of in-progress teeth
-            this.selectedProcedures = []; // Keep track of selected procedures
-            this.completedProcedure = []; // Keep track of completed procedures
-            this.progressProcedure = []; // Keep track of in-progress procedures
-            this.treatmentId = action.context.active_id;  // Get treatment ID from the context
-        },
-        start: function () {
-            var self = this;
-            self.load_data();
-            self.loadSelectedTeeth();
-
-        },
-        compute_total_cost: function (treatment) {
-            var totalCost = 0;
-            var completedProcedures = treatment.completed_procedure.split(',').map(function (procedure) {
-                return procedure.trim();
-            });
-
-            // Assuming procedures is an array of objects with 'id' and 'tooth_id' properties
-            var procedures = this.procedure_lines || [];
-
-            completedProcedures.forEach(function (procedureId) {
-                var matchedProcedure = procedures.find(function (proc) {
-                    return proc.id === procedureId;
-                });
-
-                if (matchedProcedure) {
-                    totalCost += matchedProcedure.cost;
-                }
-            });
-
-            return totalCost.toFixed(2);  // Adjust this based on your precision requirements
-        },
-
-
-        load_data: function () {
-            var self = this;
-            self._rpc({
-                model: 'dentist.treatment',
-                method: 'search_read',
-                args: [[['id', '=', self.treatmentId]], ['completed_procedure', 'progress_procedure']],
-            }).then(function (treatments) {
-                self.$('.treatment_table_view').html(QWeb.render('TreatmentTable', {
-                    treatment_lines: treatments,
-                }));
-
-                console.log("treatments", treatments)
-            });
-
-
-            self._rpc({
-                model: 'dentist.procedure',
-                method: 'search_read',
-                args: [],
-            }).then(function (procedures_data) {
-                self.$('.Procedure_table_view').html(QWeb.render('ProcedureTable', {
-                    procedure_lines: procedures_data,
-                }));
-            });
-
-            self._rpc({
-                model: 'dentist.tooth',
-                method: 'get_tooth_data',
-                args: [],
-            }).then(function (datas) {
-                self.$('.table_view').html(QWeb.render('ToothTable', {
-                    tooth_lines: datas,
-                }));
-
-                // Fetch the completed and in-progress teeth data from the backend
+            },
+            load_data: function () {
+                var self = this;
                 self._rpc({
-                    model: 'dentist.treatment',
-                    method: 'read',
-                    args: [[self.treatmentId], ['tooth_completed', 'tooth_in_progress', 'progress_procedure', 'completed_procedure']],
-                }).then(function (result) {
-                    var completedTeethData = result[0].tooth_completed;
-                    var inProgressTeethData = result[0].tooth_in_progress;
-                    var progressProcedureData = result[0].progress_procedure;
-                    var completedProcedureData = result[0].completed_procedure;
-
-
-                    // Parse the string to get the completed teeth
-                    var completedTeeth = completedTeethData ? completedTeethData.split(',').map(function (tooth) {
-                        return tooth.trim();
-                    }) : [];
-
-                    // Parse the string to get the in-progress teeth
-                    var inProgressTeeth = inProgressTeethData ? inProgressTeethData.split(',').map(function (tooth) {
-                        return tooth.trim();
-                    }) : [];
-                    // Parse the progressProcedureData string into an array of objects
-                    var progressProcedureArray = progressProcedureData ? progressProcedureData.split(',').reduce(function (accumulator, currentValue, currentIndex, array) {
-                        if (currentIndex % 2 === 0) {
-                            accumulator.push({
-                                id: currentValue,
-                                tooth_id: array[currentIndex + 1]
-                            });
-                        }
-                        return accumulator;
-                    }, []) : [];
-                    var completedProcedureArray = completedProcedureData ? completedProcedureData.split(',').reduce(function (accumulator, currentValue, currentIndex, array) {
-                        if (currentIndex % 2 === 0) {
-                            accumulator.push({
-                                id: currentValue,
-                                tooth_id: array[currentIndex + 1]
-                            });
-                        }
-                        return accumulator;
-                    }, []) : [];
-
-                    // Update UI based on completed and in-progress teeth
-                    self.completedTeeth = completedTeeth;
-                    self.inProgressTeeth = inProgressTeeth;
-                    self.progressProcedure = progressProcedureArray;
-                    self.completedProcedure = completedProcedureArray;
-                    self.updateUIToCompletedTeeth();
-                    self.updateUIToInProgressTeeth();
-                    self.updateUiToInProgressProcedure();
-                    self.updateUiToCompletedProcedure();
+                    model: 'dentist.procedure',
+                    method: 'search_read',
+                    args: [],
+                }).then(function (procedures_data) {
+                    self.$('.Procedure_table_view').html(QWeb.render('ProcedureTable', {
+                        procedure_lines: procedures_data,
+                    }));
+                    console.log("procedures_data", procedures_data);
                 });
-            });
-        },
+                self._rpc({
+                    model: 'dentist.tooth',
+                    method: 'get_tooth_data',
+                    args: [],
+                }).then(function (datas) {
+                    self.$('.table_view').html(QWeb.render('ToothTable', {
+                        tooth_lines: datas,
+                    }));
+                    console.log("datas", datas);
 
-        loadSelectedTeeth:
+                    // Update UI
+                    self.updateUIToLoadTeeth();
+                });
+            },
+            // Function to load treatment data
+            loadTreatmentData: function () {
+                var self = this;
 
-            function () {
+                // Make an RPC call to fetch treatment data
+                rpc.query({
+                    model: 'treatment.data',
+                    method: 'search_read',
+                    domain: [['treatment_id', '=', self.treatmentId]],
+
+                    args: [],
+                }).then(function (treatmentData) {
+                    // Process the fetched data
+                    self.displayTreatmentData(treatmentData);
+                    self.updateTreatmentStatistics(treatmentData);
+                });
+            },
+            updateTreatmentStatistics: function (treatmentData) {
+                // Add logic to calculate treatment statistics based on treatmentData
+                // Update the values in the template accordingly
+                var totalProceduresCount = treatmentData.length;  // Replace with actual count
+                var completedProceduresCount = treatmentData.filter(function (procedure) {
+                    return procedure.status === 'completed';
+                }).length;
+                var progressPercentage = (completedProceduresCount / totalProceduresCount) * 100;
+
+                this.$('.treatment-stats').html(QWeb.render('TreatmentStats', {
+                    totalProceduresCount: totalProceduresCount,
+                    completedProceduresCount: completedProceduresCount,
+                    progressPercentage: progressPercentage.toFixed(2),
+                    totalCost: this.totalCost,  // Update with actual total cost
+                }));
+            },
+            _onRemoveToothButtonClick: function (ev) {
+                var self = this;
+                var toothId = $(ev.currentTarget).data('id');
+                console.log("toothId", toothId);
+                if (confirm('Are you sure you want to delete this tooth?')) {
+                    self._rpc({
+                        model: 'treatment.data',
+                        method: 'unlink',
+                        args: [[toothId]],
+                    }).then(function (result) {
+                        console.log("result", result);
+                        self.loadTeeth();
+                    });
+                }
+            },
+            // Function to display treatment data in the UI
+            displayTreatmentData: function (treatmentData) {
+                var self = this;
+
+                // Check if there is treatment data
+                if (treatmentData && treatmentData.length > 0) {
+                    // Render treatment data in the UI (you can use QWeb or other methods)
+                    self.$('.treatment_table_view').html(QWeb.render('TreatmentTable', {
+                        treatment_lines: treatmentData,
+                        totalCost: self.totalCost,  // Add total cost to the template context
+                    }));
+                    console.log("treatmentData", treatmentData);
+                }
+            },
+            loadTeeth: function () {
                 var self = this;
 
                 // Fetch the selected_teeth data from the backend
                 self._rpc({
-                    model: 'dentist.treatment',
-                    method: 'read',
-                    args: [[this.treatmentId], ['tooth_completed', 'tooth_in_progress']],
+                    model: 'treatment.data',
+                    method: 'search_read',
+                    domain: [['treatment_id', '=', self.treatmentId]],
+                    fields: ['tooth_id', 'status', 'procedure', 'cost', 'universal_number'],
                 }).then(function (result) {
-                    var completedTeethData = result[0].tooth_completed;
-                    var inProgressTeethData = result[0].tooth_in_progress;
-                    if (completedTeethData) {
-                        self.completedTeeth = completedTeethData.split(',').map(function (tooth) {
-                            return tooth.trim();
-                        });
-                    }
+                    console.log("Fetched data from backend:", result);
 
-                    if (inProgressTeethData) {
-                        self.inProgressTeeth = inProgressTeethData.split(',').map(function (tooth) {
-                            return tooth.trim();
-                        });
-                    }
-
-                    // Update UI based on completed and in-progress teeth
-                    self.updateUIToCompletedTeeth();
-                    self.updateUIToInProgressTeeth();
+                    // Map the result to selectedTeeth
+                    self.loadedTeeth = result.map(function (record) {
+                        return {
+                            id: record.tooth_id.toString().trim(),
+                            status: record.status,
+                            procedure: record.procedure,
+                            cost: record.cost,
+                            universal_number: record.universal_number,
+                        };
+                    });
+                    console.log("Updated selectedTeeth:", self.loadedTeeth);
                 });
-            }
+            },
 
-        ,
+            updateUIToLoadTeeth: function () {
+                var self = this;
 
-        updateUIToSelectedTeeth: function () {
-            var self = this;
+                // Remove the 'selected', 'completed', and 'in-progress' classes from all buttons
+                self.$('.tooth_button').removeClass('selected completed in-progress');
 
-            // Remove the 'selected' class from all buttons
-            self.$('.tooth_button').removeClass('selected');
+                // Add 'selected' class to all buttons corresponding to loaded teeth
+                self.loadedTeeth.forEach(function (tooth) {
+                    var toothButton = self.$(`.tooth_button[data-id="${tooth.id}"]`);
+                    toothButton.addClass('selected');
 
-            // Add a CSS class to buttons corresponding to selected teeth
-            self.selectedTeeth.forEach(function (tooth) {
-                self.$(`.tooth_button[data-id="${tooth.id}"]`).addClass('selected');
-            });
-        }
-        ,
-
-        updateUIToCompletedTeeth: function () {
-            var self = this;
-
-            // Remove the 'completed' class from all buttons
-            self.$('.tooth_button').removeClass('completed');
-
-            // Add a CSS class to buttons corresponding to completed teeth
-            self.completedTeeth.forEach(function (toothId) {
-                self.$(`.tooth_button[data-id="${toothId}"]`).addClass('completed');
-            });
-        }
-        ,
-        updateUiToCompletedProcedure: function () {
-            var self = this;
-            self.completedProcedure.forEach(function (procedure) {
-                self.$(`.procedure_button[data-name="${procedure.id}"]`).addClass('btn-success');
-            });
-        }
-        ,
-        updateUiToInProgressProcedure: function () {
-            var self = this;
-            self.progressProcedure.forEach(function (procedure) {
-                self.$(`.procedure_button[data-name="${procedure.id}"]`).addClass('btn-warning');
-            });
-        }
-        ,
-
-        updateUIToInProgressTeeth: function () {
-            var self = this;
-
-            // Remove the 'in-progress' class from all buttons
-            self.$('.tooth_button').removeClass('in-progress');
-
-            // Add a CSS class to buttons corresponding to in-progress teeth
-            self.inProgressTeeth.forEach(function (toothId) {
-                self.$(`.tooth_button[data-id="${toothId}"]`).addClass('in-progress');
-            });
-        }
-        ,
-        _onProcedureButtonClick: function (ev) {
-            // Extracting the procedure ID from the clicked button's data attribute
-            var procedureId = $(ev.currentTarget).data('name');
-
-
-            if (this.selectedTeeth.length === 0) {
-                this.showAlert("Please select teeth first");
-                return;
-            }
-            this.selectedTeeth.forEach(function (tooth) {
-                this.selectedProcedures.push({
-                    id: procedureId.toString().trim(),
-                    tooth_id: tooth.id
+                    // Toggle the 'completed' and 'in-progress' classes based on the tooth status
+                    toothButton.toggleClass('completed', tooth.status === 'completed');
+                    toothButton.toggleClass('in-progress', tooth.status === 'in_progress');
                 });
-            }, this);
-            this.$(`.procedure_button[data-name="${procedureId}"]`).addClass('selected');
+            },
+            _onProcedureButtonClick: function (ev) {
+                var procedureId = $(ev.currentTarget).data('id');
+                var procedureName = $(ev.currentTarget).data('name');
+                var procedureCost = $(ev.currentTarget).data('cost');
 
-            // Logging the selected procedures for debugging or tracking purposes
-        }
-        ,
-        _onToothButtonClick: function (ev) {
-            var toothId = $(ev.currentTarget).data('id');
-            var isSelected = this.selectedTeeth.some(function (tooth) {
-                return tooth.id === toothId.toString().trim();
-            });
-            // Check if the tooth is already completed or in progress
-            var isCompleted = this.completedTeeth.includes(toothId);
-            var isInProgress = this.inProgressTeeth.includes(toothId);
-            var isCompletedProcedure = this.completedProcedure.some(function (procedure) {
-                    return procedure.tooth_id === toothId.toString().trim();
+                console.log("Procedure ID:", procedureId);
+                console.log("Procedure Name:", procedureName);
+                console.log("Procedure Cost:", procedureCost);
+                // Checking if no teeth are selected
+                if (this.selectedTeeth.length === 0) {
+                    window.alert('Please select a tooth first!');
+                    return;
                 }
-            );
-            var isInProgressProcedure = this.progressProcedure.some(function (procedure) {
-                return procedure.tooth_id === toothId.toString().trim();
-            });
-            console.log("isCompletedProcedure", isCompletedProcedure, 'isCompleted', isCompleted, 'isInProgress', isInProgress, 'isInProgressProcedure', isInProgressProcedure);
-            // Remove the tooth if it's already selected
-            if (isSelected) {
-                this.removeFromCompletedTeeth(toothId);
-                this.removeFromInProgressTeeth(toothId);
 
-                // Update the UI to reflect the changes
-                this.$(`.tooth_button[data-id="${toothId}"]`).removeClass('selected');
-
-                // Remove the tooth from the selectedTeeth array
-                this.selectedTeeth = this.selectedTeeth.filter(function (tooth) {
-                    return tooth.id !== toothId.toString().trim();
+                var self = this;
+                // Iterate over selected teeth and add procedure-related data
+                this.selectedTeeth.forEach(function (tooth) {
+                    var procedureData = {
+                        procedure_id: procedureId.toString().trim(),
+                        name: procedureName.toString().trim(),
+                        cost: procedureCost,
+                    };
+                    tooth.procedureData = procedureData;  // Save procedure data with the tooth
+                    self.selectedProcedures.push(procedureData);
                 });
-                this.showAlert("Tooth removed", 1100, 800)
+                // Logging the selected procedures for debugging or tracking purposes
+                console.log("Selected Procedures", this.selectedProcedures);
+                console.log("Selected Teeth", this.selectedTeeth);
+            },
+            _onToothButtonClick: function (ev) {
+                var self = this;
+                var toothId = $(ev.currentTarget).data('id');
+                var toothNumber = $(ev.currentTarget).data('universal_number');
 
-            } else {
-                // Add the tooth if it's not selected and not completed or in progress
-                if (!isCompleted && !isInProgress) {
+
+                // Check if the tooth is already selected
+                var existingToothIndex = this.selectedTeeth.findIndex(function (tooth) {
+                    return tooth.id === toothId.toString().trim();
+                });
+
+                // Define an array of possible statuses
+                var possibleStatuses = ['completed', 'in_progress'];
+
+                if (existingToothIndex !== -1) {
+                    // Tooth is already selected, change its status or perform other actions
+                    console.log("Tooth already selected. Existing status:", this.selectedTeeth[existingToothIndex].status);
+
+                    // Find the index of the current status in the array
+                    var currentStatusIndex = possibleStatuses.indexOf(this.selectedTeeth[existingToothIndex].status);
+
+                    // Calculate the next status index
+                    var nextStatusIndex = (currentStatusIndex + 1) % possibleStatuses.length;
+
+                    // Update the status to the next one in the array
+                    this.selectedTeeth[existingToothIndex].status = possibleStatuses[nextStatusIndex];
+
+                    // Update the UI to reflect the changes with the corresponding status
+                    self.updateUIToTeethStatus(this.selectedTeeth, 'selected');
+                } else {
+                    // Add the tooth if it's not already selected
                     this.selectedTeeth.push({
                         id: toothId.toString().trim(),
+                        status: '',
+                        toothNumber: toothNumber.toString().trim(),
+                        // Initialize with the first status
                     });
 
-                    // Update the UI to reflect the changes
-                    this.$(`.tooth_button[data-id="${toothId}"]`).addClass('selected');
+                    console.log("Tooth added. Updated selectedTeeth:", this.selectedTeeth);
+
+                    // Update the UI to reflect the changes with the corresponding status
+                    self.updateUIToTeethStatus(this.selectedTeeth, 'selected');
                 }
-            }
-        }
-        ,
-        showAlert: function (message, zinedx, timeout) {
-            var self = this;
-            var $alert = $('<div class="alert alert-danger   position-absolute " role="alert">' + message + '</div>');
-            $('.container').append($alert);
-            $alert.css({
-                top: '14px',
-                right: '17px',
-                zIndex: zinedx
-            });
-            setTimeout(function () {
-                $alert.fadeOut('slow', function () {
-                    $(this).remove();
+            },
+            showAlert: function (message) {
+                var self = this;
+                var $alert = $('<div class="alert alert-danger  position-absolute " role="alert">' + message + '</div>');
+                $('.container-fluid').append($alert);
+                $alert.css({
+                    top: '14px',
+                    right: '17px',
+                    zIndex: '1200'
                 });
-            }, timeout);
-        }
-        ,
-        removeProceduresByToothId: function (toothId, procedureType) {
-            var proceduresArray = this[procedureType];
-            var updatedProcedures = proceduresArray.filter(function (procedure) {
-                return procedure.tooth_id !== toothId.toString().trim();
-            });
+                setTimeout(function () {
+                    $alert.fadeOut('slow', function () {
+                        $(this).remove();
+                    });
+                }, 2000); // Alert disappears after 2 seconds (adjust as needed)
+            },
+            _onMarkCompletedButtonClick: function () {
+                var self = this;
+                var selectedForCompletion = JSON.parse(JSON.stringify(self.selectedTeeth));
+                if (confirm('Are you sure you want to mark selected teeth as completed?')) {
+                    // Set status as 'completed' for selected teeth
+                    selectedForCompletion.forEach(function (tooth) {
+                        tooth.status = 'completed';
+                    });
 
-            // Update the original procedures array
-            this[procedureType] = updatedProcedures;
+                    console.log("Teeth selected for completion:", selectedForCompletion);
 
-            // Update UI based on the procedureType
-            if (procedureType === 'completedProcedure') {
-                this.updateUiToCompletedProcedure();
-            } else if (procedureType === 'progressProcedure') {
-                this.updateUiToInProgressProcedure();
-            }
-        }
-        ,
-        removeFromCompletedTeeth: function (toothId) {
-            var index = this.completedTeeth.indexOf(toothId.toString().trim());
-            if (index !== -1) {
-                this.removeProceduresByToothId(toothId, 'completedProcedure');
+                    // Save completed teeth directly to the backend
+                    self.saveTeeth(selectedForCompletion);
 
-                this.completedTeeth.splice(index, 1);
-                this.updateUIToCompletedTeeth();
-                this.updateUiToCompletedProcedure();
-            }
-        }
-        ,
+                    // Update the UI for teeth marked as completed
+                    self.updateUIToTeethStatus(selectedForCompletion, 'completed');
 
-        removeFromInProgressTeeth: function (toothId) {
-            var index = this.inProgressTeeth.indexOf(toothId.toString().trim());
-            if (index !== -1) {
-                this.removeProceduresByToothId(toothId, 'progressProcedure')
-                this.inProgressTeeth.splice(index, 1);
-                this.updateUiToInProgressProcedure();
-                this.updateUIToInProgressTeeth();
-            }
-        }
-        ,
-        _onMarkCompletedButtonClick: function () {
-            var self = this;
-
-            // Add the selected teeth to the completedTeeth array
-            self.selectedTeeth.forEach(function (tooth) {
-                if (!self.completedTeeth.includes(tooth.id)) {
-                    self.completedTeeth.push(tooth.id);
+                    // Clear the selectedTeeth array (original one remains unchanged)
+                    self.selectedTeeth = [];
                 }
-                // Remove from inProgressTeeth if it exists
-                self.removeFromInProgressTeeth(tooth.id);
-            });
-            self.selectedProcedures.forEach(function (procedure) {
-                self.completedProcedure.push({
-                    id: procedure.id,
-                    tooth_id: procedure.tooth_id
+            },
+            _onMarkInProgressButtonClick: function () {
+                var self = this;
+                var selectedForProgress = JSON.parse(JSON.stringify(self.selectedTeeth));
+                console.log("Selected for progress:", selectedForProgress);
+
+                // Set status as 'in_progress' for selected teeth
+                selectedForProgress.forEach(function (tooth) {
+                    tooth.status = 'in_progress';
                 });
-            });
-            // Update the UI to reflect the changes
-            self.updateUIToCompletedTeeth();
-            self.updateUiToCompletedProcedure();
-            self.selectedTeeth = [];
-            self.selectedProcedures = [];
-            self.updateUIToSelectedTeeth();
-        }
-        ,
 
+                console.log("Teeth selected for progress:", selectedForProgress);
 
-        _onMarkInProgressButtonClick: function () {
-            var self = this;
-            // Add the selected teeth to the inProgressTeeth array
-            self.selectedTeeth.forEach(function (tooth) {
-                if (!self.inProgressTeeth.includes(tooth.id)) {
-                    self.inProgressTeeth.push(tooth.id);
-                }
-                // Remove from completedTeeth if it exists
-                self.removeFromCompletedTeeth(tooth.id);
-            });
+                // Save in-progress teeth directly to the backend
+                self.saveTeeth(selectedForProgress);
 
-            self.selectedProcedures.forEach(function (procedure) {
-                self.progressProcedure.push({
-                    id: procedure.id,
-                    tooth_id: procedure.tooth_id
+                // Update the UI for teeth marked as in-progress
+                self.updateUIToTeethStatus(selectedForProgress, 'in-progress');
+
+                // Clear the selectedTeeth array (original one remains unchanged)
+                self.selectedTeeth = [];
+            },
+            saveTeeth: function (teeth) {
+                var self = this;
+
+                // Save data to the backend
+                teeth.forEach(function (tooth) {
+                    // Check if procedure data is available
+                    if (tooth.procedureData) {
+                        self._rpc({
+                            model: 'treatment.data',
+                            method: 'create',
+                            args: [{
+                                treatment_id: self.treatmentId,
+                                tooth_id: tooth.id,
+                                universal_number: tooth.toothNumber,
+                                status: tooth.status,
+                                procedure: tooth.procedureData.name,
+                                cost: tooth.procedureData.cost,
+                                patient_id: self.patient,
+                                // Add additional fields if needed
+                            }],
+                        });
+                    } else {
+                        // If no procedure data, save only tooth-related data
+                        self._rpc({
+                            model: 'treatment.data',
+                            method: 'create',
+                            args: [{
+                                treatment_id: self.treatmentId,
+                                tooth_id: tooth.id,
+                                universal_number: tooth.toothNumber,
+                                status: tooth.status,
+                                patient_id: self.patient,  // Add patient_id to the data
+
+                            }],
+                        });
+                    }
                 });
-            });
-
-            // Update the UI to reflect the changes
-            self.updateUIToInProgressTeeth();
-            self.updateUiToInProgressProcedure();
-
-            // Clear the selectedTeeth and selectedProcedures arrays
-            self.selectedTeeth = [];
-            self.selectedProcedures = [];
-            self.updateUIToSelectedTeeth();
-        }
-        ,
-        _onSaveButtonClick: function () {
-            var self = this;
-
-            // Prepare the selected teeth data as a string
-            var selectedTeethData = this.selectedTeeth.map(function (tooth) {
-                return `${tooth.id}`;
-            }).join(',');
-
-            // Prepare the completed teeth data as a string
-            var completedTeethData = this.completedTeeth.join(',');
-
-            // Prepare the in-progress teeth data as a string
-            var inProgressTeethData = this.inProgressTeeth.join(',');
-
-            var progressProcedureData = this.progressProcedure.map(function (procedure) {
-                return `${procedure.id},${procedure.tooth_id}`;
-            }).join(',');
-
-            var completedProcedureData = this.completedProcedure.map(function (procedure) {
-                return `${procedure.id},${procedure.tooth_id}`;
-            }).join(',');
-
-            // Update the selected_teeth, tooth_completed, and tooth_in_progress fields in the backend
-            self._rpc({
-                model: 'dentist.treatment',
-                method: 'write',
-                args: [[this.treatmentId], {
-                    tooth_completed: completedTeethData,
-                    tooth_in_progress: inProgressTeethData,
-                    progress_procedure: progressProcedureData,
-                    completed_procedure: completedProcedureData,
-
-                }],
-            }).then(function (result) {
-                // Handle the result as needed (e.g., show a success message)
                 window.alert('Operation completed successfully!');
+            },
 
-            });
-        }
-        ,
-    });
+            updateUIToTeethStatus: function (teeth, statusClass) {
+                var self = this;
+
+                // Add a CSS class to buttons corresponding to teeth with the specified status
+                teeth.forEach(function (tooth) {
+                    var $toothButton = self.$(`.tooth_button[data-id="${tooth.id}"]`);
+
+                    // Remove the status classes and then add the new one
+                    $toothButton.removeClass('selected completed in-progress').addClass(statusClass);
+                });
+            },
+        })
+    ;
 
     core.action_registry.add("tooth_cust", ToothCustom);
     return ToothCustom;
-})
-;
+});

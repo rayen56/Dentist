@@ -15,8 +15,11 @@
         'views/teeth_view.xml',
         'views/assets.xml',
         'views/procedure_view.xml',
+        'views/treatment_data_view.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
+    'script': ['static/src/js/*.js'],
+
     'installable': True,
     'application': True,
 }
