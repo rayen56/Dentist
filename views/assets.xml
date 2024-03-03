@@ -3,6 +3,7 @@
         <template id="assets_backend" name="dentist.assets_backend" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/Dentist/static/src/js/tooth.js"></script>
+                <script type="text/javascript" src="/Dentist/static/src/js/dashboard.js"></script>
                 <link rel="stylesheet" href="/Dentist/static/src/css/tooth.css"/>
             </xpath>
         </template>

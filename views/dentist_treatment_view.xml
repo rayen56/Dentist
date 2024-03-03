@@ -15,7 +15,6 @@
                             <field name="patient_ids" widget="many2many_tags"/>
                             <field name="description"/>
                             <field name="total_cost"/>
-                            <field name="duration"/>
                             <field name="treatment_data_ids" widget="one2many"/>
                         </group>
                     </sheet>
@@ -44,5 +43,7 @@
 
         <menuitem id="treatment_menu" name="Treatment" parent="menu_dentist_root_menu"
                   action="action"/>
+
+
     </data>
 </odoo>

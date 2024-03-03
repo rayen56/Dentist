@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 
+
 class DentistPatient(models.Model):
     _name = 'dentist.patient'
     _description = 'Dentist Patient'
@@ -45,8 +46,40 @@ class DentistPatient(models.Model):
 
     # Image Fields for Dental Records
     x_rays = fields.Image(string='X-Rays', help='Upload X-Ray images', track_visibility='onchange')
-    dental_images = fields.Image(string='Dental Images', attachment=True, help='Upload dental images', track_visibility='onchange')
-
+    dental_images = fields.Image(string='Dental Images', attachment=True, help='Upload dental images',
+                                 track_visibility='onchange')
 
     # Appointments
-    appointments = fields.One2many('dentist.appointment', 'patient_id', string='Appointments', track_visibility='onchange')
+    appointments = fields.One2many('dentist.appointment', 'patient_id', string='Appointments',
+                                   track_visibility='onchange')
+
+    treatments = fields.Many2many('dentist.treatment', string='Treatments',  store=True)
+
+    @api.model
+    def get_demographics_data(self):
+        # Fetch patient demographics data
+        demographics_data = {
+            'Male': self.search_count([('gender', '=', 'male')]),
+            'Female': self.search_count([('gender', '=', 'female')]),
+        }
+        return demographics_data
+    #problem check it later
+    @api.depends('appointments')
+    def _compute_treatments(self):
+        for patient in self:
+            treatments = patient.appointments.mapped('id')
+            patient.treatments = treatments
+
+    def action_view_treatments(self):
+        action = {
+            'name': 'Patient Treatments',
+            'type': 'ir.actions.act_window',
+            'res_model': 'dentist.treatment',
+            'view_mode': 'tree,form',
+            'target': 'current',
+            'context': {
+                'search_default_patient_ids': [self.id],
+                'default_patient_ids': [(6, 0, [self.id])],
+            },
+        }
+        return action

@@ -16,6 +16,7 @@
         'views/assets.xml',
         'views/procedure_view.xml',
         'views/treatment_data_view.xml',
+        'views/dashboard_view.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'script': ['static/src/js/*.js'],

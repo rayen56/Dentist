@@ -7,8 +7,7 @@ class Treatment(models.Model):
 
     name = fields.Char(string='Treatment Name')
     patient_ids = fields.Many2many('dentist.patient', string="Patient")
-    description = fields.Text(string='Treatment Description', help="Description of the treatment")
-    duration = fields.Float(string='Treatment Duration', help="Estimated time in minutes or hours")
+    description = fields.Text(string='Description', help="Description of the treatment")
     total_cost = fields.Float(
         string='Total Cost',
         compute='_compute_total_cost',

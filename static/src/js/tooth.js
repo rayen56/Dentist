@@ -5,6 +5,7 @@ odoo.define('dentist.tooth_cust', function (require) {
     var rpc = require('web.rpc');
     var QWeb = core.qweb;
 
+
     var ToothCustom = AbstractAction.extend({
             template: 'ToothCust',
             events: {
@@ -23,7 +24,6 @@ odoo.define('dentist.tooth_cust', function (require) {
                 this.treatmentId = action.context.active_id;  // Get treatment ID from the context
                 this.patient = action.context.patient;  // Get patient names from the context
                 this.totalCost = action.context.total_cost;  // Get total cost from the context
-                console.log("total_cost", this.totalCost);
             },
             start: function () {
                 var self = this;
@@ -76,8 +76,6 @@ odoo.define('dentist.tooth_cust', function (require) {
                 });
             },
             updateTreatmentStatistics: function (treatmentData) {
-                // Add logic to calculate treatment statistics based on treatmentData
-                // Update the values in the template accordingly
                 var totalProceduresCount = treatmentData.length;  // Replace with actual count
                 var completedProceduresCount = treatmentData.filter(function (procedure) {
                     return procedure.status === 'completed';
@@ -90,6 +88,58 @@ odoo.define('dentist.tooth_cust', function (require) {
                     progressPercentage: progressPercentage.toFixed(2),
                     totalCost: this.totalCost,  // Update with actual total cost
                 }));
+                var progressChart = new Chart("progress_chart", {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Completed', 'In Progress'],
+                        datasets: [{
+                            label: 'Progress',
+                            data: [completedProceduresCount, totalProceduresCount - completedProceduresCount],
+                            backgroundColor: [
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(255, 99, 132, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                var chart = new Chart("chart_example", {
+                    type: "bar", // Choose your desired chart type
+                    data: {
+                        labels: ['Total Procedures', 'Completed Procedures'],
+                        datasets: [{
+                            label: 'Procedures',
+                            data: [totalProceduresCount, completedProceduresCount],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(75, 192, 192, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
             },
             _onRemoveToothButtonClick: function (ev) {
                 var self = this;
@@ -117,7 +167,6 @@ odoo.define('dentist.tooth_cust', function (require) {
                         treatment_lines: treatmentData,
                         totalCost: self.totalCost,  // Add total cost to the template context
                     }));
-                    console.log("treatmentData", treatmentData);
                 }
             },
             loadTeeth: function () {

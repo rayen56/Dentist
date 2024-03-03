@@ -46,7 +46,6 @@
                             </div>
                         </t>
                     </templates>
-
                 </kanban>
             </field>
         </record>
@@ -63,27 +62,25 @@
                                    statusbar_visible="draft,cancelled,confirmed,done" class="o_statusbar_header"/>
                         </header>
                         <group>
-                            <group class="o_inner_group" string="Appointment Details">
-                                <label for="name" class="oe_form_label">Appointment Details</label>
+                            <group string="Appointment Details">
                                 <field name="name" readonly="1"/>
                                 <field name="appointment_type" string="Appointment Type"/>
+                                <field name="patient_id" string="Patient"/>
                                 <field name="appointment_date" string="Appointment Date"/>
                                 <field name="appointment_end_date" string="End Date"/>
-                                <field name="patient_id" string="Patient"/>
                             </group>
-                            <group class="o_inner_group" string="Additional Information">
+                            <group string="Additional Information">
                                 <field name="doctor_id" string="Assigned Doctor"/>
                                 <field name="notes" string="Notes"/>
                             </group>
                         </group>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" groups="base.group_user"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
                     </sheet>
-                    <div class="oe_chatter">
-                        <field name="message_follower_ids" groups="base.group_user"/>
-                        <field name="activity_ids"/>
-                        <field name="message_ids"/>
-                    </div>
                 </form>
-
             </field>
         </record>
 
@@ -125,18 +122,27 @@
                 </tree>
             </field>
         </record>
-        <!-- Define the appointment action -->
+
+        <record id="action_appointment_today" model="ir.actions.act_window">
+            <field name="name">Appointments Today</field>
+            <field name="res_model">dentist.appointment</field>
+            <field name="view_mode">tree,form,kanban,calendar</field>
+            <field name="domain">
+                [('appointment_date', '&lt;=', time.strftime('%Y-%m-%d 23:59:59')),
+                 ('appointment_date', '>=', time.strftime('%Y-%m-%d 00:00:00'))]
+            </field>
+        </record>
+        <menuitem id="menu_appointments" name="Appointments" parent="menu_appointment"
+                  action="action_appointment" />
+        <menuitem id="menu_appointment_today" name="Today Appointments" parent="menu_appointment"
+                  action="action_appointment_today" sequence="0"/>
+
         <record id="action_appointment" model="ir.actions.act_window">
             <field name="name">Appointments</field>
             <field name="res_model">dentist.appointment</field>
             <field name="view_mode">tree,form,kanban,calendar</field>
         </record>
 
-        <!-- Define the top-level Dentist menu -->
-        <menuitem id="menu_dentist_root_menu" name="Dentist"/>
-
-        <!-- Define the Appointments submenu under Dentist -->
-        <menuitem id="menu_appointment" name="Appointments" parent="menu_dentist_root_menu"
-                  action="action_appointment"/>
+        <menuitem id="menu_appointment" name="Appointments" parent="menu_dentist_root_menu"/>
     </data>
 </odoo>

@@ -60,11 +60,6 @@
                                         <field name="position"/>
                                     </div>
                                 </div>
-                                <div class="oe_kanban_footer">
-                                    <button class="oe_kanban_action oe_kanban_button_print">
-                                        Print Information
-                                    </button>
-                                </div>
                             </div>
                         </t>
                     </templates>

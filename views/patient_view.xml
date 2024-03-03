@@ -8,8 +8,11 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                        <header>
+                            <button string="Treatments" class="oe_highlight" type="object"
+                                    name="action_view_treatments"/>
+                        </header>
                         <div class="oe_button_box" name="button_box"/>
-                        <!-- Image and Name Section -->
                         <div>
                             <field name="image_1920" widget='image' class="oe_avatar"
                                    options='{"zoom": true, "preview_image":"image_1920"}'/>
@@ -165,13 +168,11 @@
             <field name="name">Patients</field>
             <field name="res_model">dentist.patient</field>
             <field name="view_mode">tree,form,kanban</field>
-
         </record>
 
-        <!-- Define the top-level Dentist menu -->
         <menuitem id="menu_dentist_root_menu" name="Dentist" sequence="1"/>
 
         <!-- Define the Patients submenu under Dentist -->
-            <menuitem id="menu_patient" name="Patients" parent="menu_dentist_root_menu" action="action_patient"/>
+        <menuitem id="menu_patient" name="Patients" parent="menu_dentist_root_menu" action="action_patient"/>
     </data>
 </odoo>
