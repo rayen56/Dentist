@@ -4,6 +4,7 @@
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/Dentist/static/src/js/tooth.js"></script>
                 <script type="text/javascript" src="/Dentist/static/src/js/dashboard.js"></script>
+                <script type="text/javascript" src="/Dentist/static/src/js/patient_progress_chart.js"></script>
                 <link rel="stylesheet" href="/Dentist/static/src/css/tooth.css"/>
             </xpath>
         </template>

@@ -30,6 +30,21 @@ class DentistAppointment(models.Model):
         ('cancelled', 'Cancelled')],
         string='Status', default='draft', track_visibility='onchange')
 
+    @api.model
+    def get_patient_appointments(self, patient_id):
+        """
+        Fetch appointments related to a specific patient.
+
+        :param patient_id: ID or other identifier of the patient
+        :return: List of dictionaries containing appointment data
+        """
+        appointments = self.search([('patient_id', '=', patient_id)])
+
+        # You may need to customize this logic based on your actual data model
+        appointments_data = [{'date': appointment.appointment_date, 'count': 1} for appointment in appointments]
+
+        return appointments_data
+
     # Constraint to check appointment date and end date
     @api.constrains('appointment_date', 'appointment_end_date')
     def _check_appointment_dates(self):

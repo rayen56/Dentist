@@ -16,6 +16,8 @@ class Treatment(models.Model):
     )
     notes = fields.Text(string='Treatment Notes', help="Additional information about the treatment")
     treatment_data_ids = fields.One2many('treatment.data', 'treatment_id', string='Treatment Data')
+    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.ref('base.TND').id,
+                                  readonly=True)
 
     @api.depends('treatment_data_ids.cost')
     def _compute_total_cost(self):
@@ -33,4 +35,14 @@ class Treatment(models.Model):
             'name': f'Tooth  - Patient: {patient_names}',
             'target': 'new',
             'context': {'active_id': self.id, 'patient': patient_names, 'total_cost': self.total_cost},
+        }
+
+    def action_show_patient_progress_chart(self):
+        patient_names = ', '.join(self.patient_ids.mapped('name'))
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'patient_progress_chart',
+            'name': f'{patient_names} - Progress Chart ',
+            'target': 'new',
+            'context': {'active_id': self.id, 'total_cost': self.total_cost, 'patient': patient_names},
         }

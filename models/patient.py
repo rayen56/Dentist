@@ -46,6 +46,8 @@ class DentistPatient(models.Model):
 
     # Image Fields for Dental Records
     x_rays = fields.Image(string='X-Rays', help='Upload X-Ray images', track_visibility='onchange')
+    image = fields.Many2many('ir.attachment', string="Image")
+
     dental_images = fields.Image(string='Dental Images', attachment=True, help='Upload dental images',
                                  track_visibility='onchange')
 
@@ -53,7 +55,7 @@ class DentistPatient(models.Model):
     appointments = fields.One2many('dentist.appointment', 'patient_id', string='Appointments',
                                    track_visibility='onchange')
 
-    treatments = fields.Many2many('dentist.treatment', string='Treatments',  store=True)
+    treatments = fields.Many2many('dentist.treatment', string='Treatments', store=True)
 
     @api.model
     def get_demographics_data(self):
@@ -63,7 +65,10 @@ class DentistPatient(models.Model):
             'Female': self.search_count([('gender', '=', 'female')]),
         }
         return demographics_data
-    #problem check it later
+
+
+
+    # problem check it later
     @api.depends('appointments')
     def _compute_treatments(self):
         for patient in self:
@@ -80,6 +85,10 @@ class DentistPatient(models.Model):
             'context': {
                 'search_default_patient_ids': [self.id],
                 'default_patient_ids': [(6, 0, [self.id])],
+                'search_default_patient_id': self.id,  # Add this line to set the default patient filter
+                'default_patient_id': self.id,  # Add this line to set the default patient
             },
+            'domain': [('patient_ids', '=', self.id)],  # Add this line to filter treatments by patient
         }
         return action
+

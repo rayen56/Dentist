@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form view for TreatmentData -->
+        <record id="view_treatment_data_form" model="ir.ui.view">
+            <field name="name">treatment.data.form</field>
+            <field name="model">treatment.data</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="treatment_id"/>
+                        <field name="patient_id"/>
+                        <field name="tooth_id"/>
+                        <field name="universal_number"/>
+                        <field name="procedure"/>
+                        <field name="status"/>
+                        <field name="cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="currency_id" invisible="1"/></group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree view for TreatmentData -->
+        <record id="view_treatment_data_tree" model="ir.ui.view">
+            <field name="name">treatment.data.tree</field>
+            <field name="model">treatment.data</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="create_date"/>
+                    <field name="patient_id"/>
+                    <field name="tooth_id"/>
+                    <field name="universal_number"/>
+                    <field name="procedure"/>
+                    <field name="status"/>
+                    <field name="cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="currency_id" invisible="1"/></tree>
+            </field>
+        </record>
+
+        <!-- Action for TreatmentData -->
+        <record id="action_treatment_data" model="ir.actions.act_window">
+            <field name="name">Treatment Data</field>
+            <field name="res_model">treatment.data</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu for TreatmentData -->
+        <menuitem id="menu_treatment_data" name="Treatment Data" parent="menu_dentist_root_menu"
+                  action="action_treatment_data"/>
+    </data>
+</odoo>

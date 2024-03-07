@@ -1,0 +1,52 @@
+<templates>
+    <t t-name="PatientProgressChart">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-5 mb-4">
+                    <canvas id="progress_chart" height="250"></canvas>
+                </div>
+                <div class="col-md-7">
+                    <div class="treatment-stats">
+                    </div>
+                    <div class="h-50">
+                        <canvas id="appointment_chart" style="height: 250px !important;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="TreatmentStats">
+        <div class="treatment-stats mt-4">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h2 class="fw-bold mb-4">Treatment Progress</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-3 text-center">
+                    <p class="mb-2">Total Procedures:</p>
+                    <h4 class="fw-bold mb-4"><span t-esc="totalProceduresCount"/></h4>
+                </div>
+                <div class="col-md-3 text-center">
+                    <p class="mb-2">Completed:</p>
+                    <h4 class="fw-bold mb-4"><span t-esc="completedProceduresCount"/></h4>
+                </div>
+                <div class="col-md-3 text-center">
+                    <p class="mb-2">Progress:</p>
+                    <h4 class="fw-bold mb-4">
+                        <span t-esc="progressPercentage"/>%
+                    </h4>
+                </div>
+                <div class="col-md-3 text-center">
+                    <p class="mb-2">Total Cost:</p>
+                    <h4 class="fw-bold mb-4">
+                        <span t-esc="totalCost"/> TND
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

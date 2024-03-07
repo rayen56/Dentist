@@ -33,12 +33,6 @@
                     </div>
                 </div>
             </div>
-            <div class="container">
-                <div class="w-50">
-                    <div class="treatment-stats ">
-                    </div>
-                </div>
-            </div>
         </div>
     </t>
     <t t-name="ToothTable">
@@ -101,18 +95,6 @@
                     </tbody>
                 </table>
             </t>
-        </div>
-    </t>
-    <t t-name="TreatmentStats">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-        <div class="treatment-stats">
-            <canvas id="chart_example" height="200px" width="200px"/>
-            <canvas id="progress_chart" height="200px" width="200px"/>
-            <p>Total Procedures: <span t-esc="totalProceduresCount"/></p>
-            <p>Completed Procedures: <span t-esc="completedProceduresCount"/></p>
-            <p>Progress: <span t-esc="progressPercentage"/>%</p>
-            <p>Total Cost: $<span t-esc="totalCost"/></p>
-            <!-- Add more statistics as needed -->
         </div>
     </t>
 </templates>

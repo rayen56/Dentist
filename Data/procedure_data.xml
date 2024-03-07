@@ -1,0 +1,106 @@
+<odoo>
+    <data noupdate="1">
+
+        <!-- Dental Procedures -->
+        <record id="procedure_dental_cleaning" model="dentist.procedure">
+            <field name="name">Dental Cleaning</field>
+            <field name="cost">100.00</field>
+        </record>
+
+        <record id="procedure_tooth_extraction" model="dentist.procedure">
+            <field name="name">Tooth Extraction</field>
+            <field name="cost">150.00</field>
+        </record>
+
+        <record id="procedure_root_canal_therapy" model="dentist.procedure">
+            <field name="name">Root Canal Therapy</field>
+            <field name="cost">300.00</field>
+        </record>
+
+        <record id="procedure_dental_fillings" model="dentist.procedure">
+            <field name="name">Dental Fillings</field>
+            <field name="cost">120.00</field>
+        </record>
+
+        <record id="procedure_crown_installation" model="dentist.procedure">
+            <field name="name">Crown Installation</field>
+            <field name="cost">250.00</field>
+        </record>
+
+        <record id="procedure_dental_bridge_placement" model="dentist.procedure">
+            <field name="name">Dental Bridge Placement</field>
+            <field name="cost">400.00</field>
+        </record>
+
+        <record id="procedure_dental_implant_surgery" model="dentist.procedure">
+            <field name="name">Dental Implant Surgery</field>
+            <field name="cost">700.00</field>
+        </record>
+
+        <record id="procedure_orthodontic_treatment" model="dentist.procedure">
+            <field name="name">Orthodontic Treatment</field>
+            <field name="cost">1500.00</field>
+        </record>
+
+        <record id="procedure_teeth_whitening" model="dentist.procedure">
+            <field name="name">Teeth Whitening</field>
+            <field name="cost">200.00</field>
+        </record>
+
+        <record id="procedure_gum_disease_treatment" model="dentist.procedure">
+            <field name="name">Gum Disease Treatment</field>
+            <field name="cost">350.00</field>
+        </record>
+
+        <record id="procedure_wisdom_tooth_removal" model="dentist.procedure">
+            <field name="name">Wisdom Tooth Removal</field>
+            <field name="cost">180.00</field>
+        </record>
+
+        <record id="procedure_dental_xrays" model="dentist.procedure">
+            <field name="name">Dental X-rays</field>
+            <field name="cost">80.00</field>
+        </record>
+
+        <record id="procedure_oral_surgery" model="dentist.procedure">
+            <field name="name">Oral Surgery</field>
+            <field name="cost">400.00</field>
+        </record>
+
+        <record id="procedure_tmj_treatment" model="dentist.procedure">
+            <field name="name">TMJ Treatment</field>
+            <field name="cost">300.00</field>
+        </record>
+
+        <record id="procedure_pediatric_dentistry" model="dentist.procedure">
+            <field name="name">Pediatric Dentistry</field>
+            <field name="cost">120.00</field>
+        </record>
+
+        <record id="procedure_denture_fitting" model="dentist.procedure">
+            <field name="name">Denture Fitting</field>
+            <field name="cost">250.00</field>
+        </record>
+
+        <record id="procedure_cosmetic_dentistry" model="dentist.procedure">
+            <field name="name">Cosmetic Dentistry</field>
+            <field name="cost">300.00</field>
+        </record>
+
+        <record id="procedure_dental_bonding" model="dentist.procedure">
+            <field name="name">Dental Bonding</field>
+            <field name="cost">180.00</field>
+        </record>
+
+        <record id="procedure_periodontal_therapy" model="dentist.procedure">
+            <field name="name">Periodontal Therapy</field>
+            <field name="cost">250.00</field>
+        </record>
+
+        <record id="procedure_dental_sealants" model="dentist.procedure">
+            <field name="name">Dental Sealants</field>
+            <field name="cost">100.00</field>
+        </record>
+
+    </data>
+</odoo>

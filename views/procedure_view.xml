@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="procedure_form_view" model="ir.ui.view">
+            <field name="name">procedure.form</field>
+            <field name="model">dentist.procedure</field>
+            <field name="arch" type="xml">
+                <form string="Procedure">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id" invisible="1"/></group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="procedure_tree_view">
+            <field name="name">procedure.tree</field>
+            <field name="model">dentist.procedure</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="id" invisible="1"/>
+                    <field name="name"/>
+                    <field name="cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="procedure_search_view" model="ir.ui.view">
+            <field name="name">procedure.search</field>
+            <field name="model">dentist.procedure</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="cost"/>
+                </search>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_procedure">
+            <field name="name">Procedures</field>
+            <field name="res_model">dentist.procedure</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_procedure" name="Procedures" parent="menu_dentist_root_menu" action="action_procedure"/>
+    </data>
+</odoo>

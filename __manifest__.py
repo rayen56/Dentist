@@ -19,8 +19,11 @@
         'views/dashboard_view.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
-    'script': ['static/src/js/*.js'],
-
+    'assets': {
+        'web.assets_backend': [
+            'Dentist/static/src/css/all.min.css',
+        ],
+    },
     'installable': True,
     'application': True,
 }
