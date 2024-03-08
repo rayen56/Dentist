@@ -30,7 +30,6 @@ odoo.define('dentist.tooth_cust', function (require) {
                 self.load_data();
                 self.loadTeeth();
                 self.loadTreatmentData();
-
             },
             load_data: function () {
                 var self = this;
@@ -79,16 +78,15 @@ odoo.define('dentist.tooth_cust', function (require) {
                 var self = this;
                 var toothId = $(ev.currentTarget).data('id');
                 console.log("toothId", toothId);
-                if (confirm('Are you sure you want to delete this tooth?')) {
+
                     self._rpc({
                         model: 'treatment.data',
                         method: 'unlink',
                         args: [[toothId]],
                     }).then(function (result) {
-                        console.log("result", result);
                         self.loadTeeth();
+                        self.showAlert('Tooth deleted successfully!', 'danger');
                     });
-                }
             },
             // Function to display treatment data in the UI
             displayTreatmentData: function (treatmentData) {
@@ -218,41 +216,52 @@ odoo.define('dentist.tooth_cust', function (require) {
                     self.updateUIToTeethStatus(this.selectedTeeth, 'selected');
                 }
             },
-            showAlert: function (message) {
+            showAlert: function (message, type = 'success') {
                 var self = this;
-                var $alert = $('<div class="alert alert-danger  position-absolute " role="alert">' + message + '</div>');
-                $('.container-fluid').append($alert);
+                var alertClasses = {
+                    'success': 'alert-success',
+                    'info': 'alert-info',
+                    'warning': 'alert-warning',
+                    'danger': 'alert-danger'
+                };
+
+                var $alert = $('<div class="alert ' + alertClasses[type] + ' position-absolute" role="alert">' + message + '</div>');
+                $('.alert-container').append($alert);
+
                 $alert.css({
                     top: '14px',
                     right: '17px',
                     zIndex: '1200'
                 });
+
                 setTimeout(function () {
                     $alert.fadeOut('slow', function () {
                         $(this).remove();
                     });
                 }, 2000); // Alert disappears after 2 seconds (adjust as needed)
             },
+
+
             _onMarkCompletedButtonClick: function () {
                 var self = this;
                 var selectedForCompletion = JSON.parse(JSON.stringify(self.selectedTeeth));
-                if (confirm('Are you sure you want to mark selected teeth as completed?')) {
-                    // Set status as 'completed' for selected teeth
-                    selectedForCompletion.forEach(function (tooth) {
-                        tooth.status = 'completed';
-                    });
+                // Set status as 'completed' for selected teeth
+                selectedForCompletion.forEach(function (tooth) {
+                    tooth.status = 'completed';
+                });
 
-                    console.log("Teeth selected for completion:", selectedForCompletion);
+                console.log("Teeth selected for completion:", selectedForCompletion);
 
-                    // Save completed teeth directly to the backend
-                    self.saveTeeth(selectedForCompletion);
+                // Save completed teeth directly to the backend
+                self.saveTeeth(selectedForCompletion);
 
-                    // Update the UI for teeth marked as completed
-                    self.updateUIToTeethStatus(selectedForCompletion, 'completed');
+                // Update the UI for teeth marked as completed
+                self.updateUIToTeethStatus(selectedForCompletion, 'completed');
 
-                    // Clear the selectedTeeth array (original one remains unchanged)
-                    self.selectedTeeth = [];
-                }
+                // Clear the selectedTeeth array (original one remains unchanged)
+                self.selectedTeeth = [];
+                self.showAlert('Teeth marked as completed successfully!', 'success');
+
             },
             _onMarkInProgressButtonClick: function () {
                 var self = this;
@@ -274,6 +283,8 @@ odoo.define('dentist.tooth_cust', function (require) {
 
                 // Clear the selectedTeeth array (original one remains unchanged)
                 self.selectedTeeth = [];
+                self.showAlert('Teeth marked as in-progress successfully!', 'warning');
+
             },
             saveTeeth: function (teeth) {
                 var self = this;
@@ -312,7 +323,6 @@ odoo.define('dentist.tooth_cust', function (require) {
                         });
                     }
                 });
-                window.alert('Operation completed successfully!');
             },
 
             updateUIToTeethStatus: function (teeth, statusClass) {

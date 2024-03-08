@@ -192,14 +192,17 @@ odoo.define('dentist.dashboard_cust', function (require) {
                 method: 'get_revenue_breakdown',
                 args: ['daily'],
             }).then(function (dailyRevenueData) {
-                // Extract date and revenue from the array
-                var date = Object.keys(dailyRevenueData)[0];
-                var dailyRevenue = dailyRevenueData[date]?.toFixed(2) || 0.00
-                console.log(dailyRevenue)
 
-                // Display daily revenue on the card
-                self.$('.dailyRevenue').text(dailyRevenue);
+                // Calculate total daily revenue
+                var totalDailyRevenue = Object.values(dailyRevenueData)
+                    .filter(revenue => revenue !== null)
+                    .reduce((acc, revenue) => acc + revenue, 0);
+
+
+                // Display total daily revenue on the card
+                self.$('.dailyRevenue').text(totalDailyRevenue);
             });
+
         },
         loadDemographicsChart: function () {
             var self = this;
@@ -221,9 +224,11 @@ odoo.define('dentist.dashboard_cust', function (require) {
                         labels: labels,
                         datasets: [{
                             data: data,
-                            backgroundColor: ['#36A2EB', '#FF6384'],
+                            backgroundColor: ['#36A2EB', '#f82251'],
+                            hoverOffset: 4
                         }],
                     },
+                    options: {},
                 });
             });
         },
@@ -249,8 +254,6 @@ odoo.define('dentist.dashboard_cust', function (require) {
                     }
                 });
 
-                // Create a chart for treatment status
-                // Create a chart for treatment status
                 var statusChart = new Chart("treatment_status_chart", {
                     type: 'bar',
                     data: {
@@ -258,12 +261,12 @@ odoo.define('dentist.dashboard_cust', function (require) {
                         datasets: [{
                             data: [completedCount, inProgressCount],
                             backgroundColor: [
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 1)', // Blue color for Completed
+                                'rgba(242, 34, 81, 1)', // Red color for In Progress
                             ],
                             borderColor: [
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(242, 34, 81, 1)',
                             ],
                             borderWidth: 1
                         }]
@@ -271,7 +274,11 @@ odoo.define('dentist.dashboard_cust', function (require) {
                     options: {
                         scales: {
                             y: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1,
+                                    precision: 0
+                                },
                             },
                             x: {
                                 grid: {
@@ -282,10 +289,11 @@ odoo.define('dentist.dashboard_cust', function (require) {
                         plugins: {
                             legend: {
                                 display: false // Hide legend
-                            }
-                        }
+                            },
+                        },
                     }
                 });
+
             });
         },
         loadTotalRevenue:
@@ -322,7 +330,7 @@ odoo.define('dentist.dashboard_cust', function (require) {
                     // Extract data for the chart
                     var dates = Object.keys(revenueData);
                     var revenueValues = Object.values(revenueData);
-                    console.log(dates, revenueValues)
+                    console.log(timeFrame, "Line Chart", dates, revenueValues)
 
                     // Create a line chart for revenue breakdown
                     configureAndRenderChart(dates, revenueValues);
@@ -332,20 +340,24 @@ odoo.define('dentist.dashboard_cust', function (require) {
 
             // Function to configure and render the chart
             function configureAndRenderChart(labels, data) {
+                // Filter out null values from the data and corresponding labels
+                var filteredData = data.filter((value, index) => value !== null);
+                var filteredLabels = labels.filter((label, index) => data[index] !== null);
+
                 revenueChart = new Chart("revenue_chart", {
                     type: 'line',
                     data: {
-                        labels: labels,
+                        labels: filteredLabels, // Use the filtered labels
                         datasets: [{
                             label: 'Total Earning',
-                            data: data,
+                            data: filteredData, // Use the filtered data
                             fill: 'start',
                             pointRadius: 1,
                             pointHoverRadius: 5,
                             backgroundColor: '#d1d1e261', // Light Blue
                             borderColor: '#8584b291', // Teal
                             borderWidth: 2,
-                            tension: 0.3,
+                            tension: 0.4,
                         }]
                     },
                     options: {
@@ -353,10 +365,12 @@ odoo.define('dentist.dashboard_cust', function (require) {
                             y: {
                                 beginAtZero: true,
                                 ticks: {
-                                    stepSize: 100,
+                                    stepSize: 200,
                                 },
                                 grid: {
                                     display: true,
+                                    color: 'rgba(0, 0, 0, 0.1)', // Light grid color
+
                                 },
                             },
                             x: {
@@ -373,6 +387,7 @@ odoo.define('dentist.dashboard_cust', function (require) {
                     },
                 });
             }
+
 
             // Set the active class to the clicked button
             function setActiveButton(activeTimeFrame) {

@@ -2,6 +2,7 @@
     <t t-name="ToothCust">
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
         <div class="container pt-4 pb-4">
+            <div class="alert-container"></div>
             <div class="row">
                 <div class="col-md-12">
                     <h3>Tooth Custom</h3>

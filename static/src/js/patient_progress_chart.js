@@ -78,10 +78,6 @@ odoo.define('dentist.patient_progress_chart', function (require) {
                                     stepSize: 1
                                 }
                             },
-                            x: {
-                                display: false
-                            }
-
                         }
                     }
                 });
