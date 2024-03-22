@@ -133,7 +133,7 @@
             </field>
         </record>
         <menuitem id="menu_appointments" name="Appointments" parent="menu_appointment"
-                  action="action_appointment" />
+                  action="action_appointment" sequence="1"/>
         <menuitem id="menu_appointment_today" name="Today Appointments" parent="menu_appointment"
                   action="action_appointment_today" sequence="0"/>
 

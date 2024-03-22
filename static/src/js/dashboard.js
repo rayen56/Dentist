@@ -189,18 +189,19 @@ odoo.define('dentist.dashboard_cust', function (require) {
             });
             rpc.query({
                 model: 'treatment.data',
-                method: 'get_revenue_breakdown',
+                method: 'get_revenue_breakdown_with_currency',
                 args: ['daily'],
-            }).then(function (dailyRevenueData) {
+            }).then(function (data) {
+                var dailyRevenueData = data.revenue_data;
+                var currency = data.currency;
 
                 // Calculate total daily revenue
                 var totalDailyRevenue = Object.values(dailyRevenueData)
                     .filter(revenue => revenue !== null)
                     .reduce((acc, revenue) => acc + revenue, 0);
 
-
-                // Display total daily revenue on the card
-                self.$('.dailyRevenue').text(totalDailyRevenue);
+                // Display total daily revenue with currency on the card
+                self.$('.dailyRevenue').text(totalDailyRevenue.toFixed(2) + ' ' + currency);
             });
 
         },
@@ -247,7 +248,7 @@ odoo.define('dentist.dashboard_cust', function (require) {
                 var inProgressCount = 0;
 
                 treatmentData.forEach(function (treatment) {
-                    if (treatment.status === 'Completed') {
+                    if (treatment.status === 'completed') {
                         completedCount++;
                     } else if (treatment.status === 'in_progress') {
                         inProgressCount++;
@@ -396,7 +397,7 @@ odoo.define('dentist.dashboard_cust', function (require) {
             }
 
             // Initial chart load
-            fetchAndRenderChart('monthly');
+            fetchAndRenderChart('daily');
 
             // Button click event handlers
             self.$('.chart-btn').click(function () {

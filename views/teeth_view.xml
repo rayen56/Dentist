@@ -51,7 +51,9 @@
                                            options="{'size': [70, 120]}"/>
                                 </div>
                                 <div class="oe_kanban_details">
-                                    <strong><field name="name"/></strong>
+                                    <strong>
+                                        <field name="name"/>
+                                    </strong>
                                     <div>
                                         <field name="universal_number"/>
                                         <field name="tooth_type"/>
@@ -73,8 +75,10 @@
             <field name="view_mode">tree,form,kanban</field>
 
         </record>
-        <menuitem id="menu_teeth" name="Teeth" parent="menu_dentist_root_menu"
-                  action="action_teeth"/>
+        <menuitem id="menu_configuration" name="Configuration" parent="menu_dentist_root_menu" sequence="1000"/>
+
+        <menuitem id="menu_teeth" name="Teeth" parent="menu_configuration" action="action_teeth"/>
+
 
     </data>
 </odoo>

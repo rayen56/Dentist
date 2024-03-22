@@ -45,7 +45,7 @@
         </record>
 
         <!-- Menu for TreatmentData -->
-        <menuitem id="menu_treatment_data" name="Treatment Data" parent="menu_dentist_root_menu"
+        <menuitem id="menu_treatment_data" name="Treatment Data" parent="menu_treatments"
                   action="action_treatment_data"/>
     </data>
 </odoo>

@@ -45,7 +45,10 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="treatment_menu" name="Treatment" parent="menu_dentist_root_menu"
+        <menuitem id="menu_treatments" name="Treatments" parent="menu_dentist_root_menu"/>
+
+
+        <menuitem id="treatment_menu" name="Treatment" parent="menu_treatments"
                   action="action"/>
 
 

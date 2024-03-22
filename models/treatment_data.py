@@ -76,3 +76,14 @@ class TreatmentData(models.Model):
             raise UserError(f"Error fetching revenue breakdown: {e}")
 
         return result
+
+    @api.model
+    def get_revenue_breakdown_with_currency(self, time_frame=None):
+        result = {}
+        currency = self.env.company.currency_id.name
+
+        # Fetch revenue breakdown data
+        result['revenue_data'] = self.get_revenue_breakdown(time_frame)
+        result['currency'] = currency
+
+        return result

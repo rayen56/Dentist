@@ -1,17 +1,18 @@
 <templates>
     <t t-name="PatientProgressChart">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"/>
+
 
         <div class="container mt-4">
             <div class="row">
                 <div class="col-md-5 mb-4">
-                    <canvas id="progress_chart" height="250"></canvas>
+                    <canvas id="progress_chart" height="250"/>
                 </div>
                 <div class="col-md-7">
                     <div class="treatment-stats">
                     </div>
                     <div class="h-50">
-                        <canvas id="appointment_chart" style="height: 250px !important;"></canvas>
+                        <canvas id="appointment_chart" style="height: 250px !important;"/>
                     </div>
                 </div>
             </div>

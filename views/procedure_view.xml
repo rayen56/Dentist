@@ -42,6 +42,6 @@
             <field name="res_model">dentist.procedure</field>
             <field name="view_mode">tree,form</field>
         </record>
-        <menuitem id="menu_procedure" name="Procedures" parent="menu_dentist_root_menu" action="action_procedure"/>
+        <menuitem id="menu_procedure" name="Procedures" parent="menu_configuration" action="action_procedure"/>
     </data>
 </odoo>

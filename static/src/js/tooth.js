@@ -51,8 +51,6 @@ odoo.define('dentist.tooth_cust', function (require) {
                     self.$('.table_view').html(QWeb.render('ToothTable', {
                         tooth_lines: datas,
                     }));
-                    console.log("datas", datas);
-
                     // Update UI
                     self.updateUIToLoadTeeth();
                 });

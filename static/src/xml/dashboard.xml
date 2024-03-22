@@ -1,6 +1,5 @@
 <templates>
     <t t-name="dentist_dashboard">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
               integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
               crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -15,10 +14,12 @@
                                 <div class="card-body p-3">
                                     <div class="media d-flex">
                                         <div class="align-self-center">
-                                            <i class="fas fa-users fa-3x float-left text-primary"></i>
+                                            <i class="fas fa-users fa-3x float-left text-primary"/>
                                         </div>
                                         <div class="media-body text-right">
-                                            <h3 class="patientStats mb-2 text-primary"><t t-esc="patientStats"/></h3>
+                                            <h3 class="patientStats mb-2 text-primary">
+                                                <t t-esc="patientStats"/>
+                                            </h3>
                                             <span>Total Patients</span>
                                         </div>
                                     </div>
@@ -33,11 +34,13 @@
                                 <div class="card-body p-3">
                                     <div class="media d-flex">
                                         <div class="align-self-center">
-                                            <i class="far fa-calendar-alt fa-3x float-left text-primary"></i>
+                                            <i class="far fa-calendar-alt fa-3x float-left text-primary"/>
                                         </div>
                                         <div class="media-body text-right">
-                                            <h3 class="appointmentStats mb-2 text-primary"><t
-                                                    t-esc="appointmentStats"/></h3>
+                                            <h3 class="appointmentStats mb-2 text-primary">
+                                                <t
+                                                        t-esc="appointmentStats"/>
+                                            </h3>
                                             <span>Total Appointments</span>
                                         </div>
                                     </div>
@@ -55,8 +58,10 @@
                                             <i class="fas fa-suitcase-medical fa-3x float-left text-primary"></i>
                                         </div>
                                         <div class="media-body text-right">
-                                            <h3 class="procedureStats mb-2 text-primary"><t
-                                                    t-esc="procedureStats"/></h3>
+                                            <h3 class="procedureStats mb-2 text-primary">
+                                                <t
+                                                        t-esc="procedureStats"/>
+                                            </h3>
                                             <span>Total Procedures</span>
                                         </div>
                                     </div>
@@ -135,15 +140,20 @@
                             <div class="d-flex justify-content-end">
                                 <div class="btn-group">
                                     <button class="chart-btn chartMonthlyBtn btn btn-outline-primary"
-                                            data-time-frame="monthly">Monthly</button>
+                                            data-time-frame="monthly">Monthly
+                                    </button>
                                     <button class="chart-btn chartYearlyBtn btn btn-outline-primary"
-                                            data-time-frame="yearly">Yearly</button>
+                                            data-time-frame="yearly">Yearly
+                                    </button>
                                     <button class="chart-btn chartAllTimeBtn btn btn-outline-primary"
-                                            data-time-frame="all_time">All Time</button>
+                                            data-time-frame="all_time">All Time
+                                    </button>
                                     <button class="chart-btn chartWeeklyBtn btn btn-outline-primary"
-                                            data-time-frame="weekly">Weekly</button>
+                                            data-time-frame="weekly">Weekly
+                                    </button>
                                     <button class="chart-btn chartDailyBtn btn btn-outline-primary"
-                                            data-time-frame="daily">Daily</button>
+                                            data-time-frame="daily">Daily
+                                    </button>
                                 </div>
                             </div>
                             <canvas id="revenue_chart" class="mt-5"></canvas>
@@ -174,8 +184,10 @@
                     <!-- Today's Appointments Section -->
                     <div class="col-md-2">
                         <div class="appointments-section h-auto">
-                            <h2 class="text-primary mb-4">Today's Appointments: <span
-                                    class="todayAppointmentCount font-weight-light"></span></h2>
+                            <h2 class="text-primary mb-4">Today's Appointments:
+                                <span
+                                        class="todayAppointmentCount font-weight-light"></span>
+                            </h2>
                             <div class="progress mb-3" style="height: 7px;">
                                 <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0"
                                      aria-valuemin="0" aria-valuemax="100"></div>
@@ -196,38 +208,38 @@
         </div>
         <style>
             .chart-btn {
-                border-radius: 20px;
+            border-radius: 20px;
             }
 
             .chart-section,
             .status-demographics-section,
             .appointments-section {
-                border: 1px solid #ccc;
-                border-radius: 10px;
-                padding: 15px;
-                margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
             }
 
             .stats-card {
-                transition: transform 0.3s ease-in-out;
-                border-radius: 20px;
+            transition: transform 0.3s ease-in-out;
+            border-radius: 20px;
             }
 
             .stats-card:hover {
-                transform: scale(1.10);
+            transform: scale(1.10);
             }
 
             .h {
-                height: 75px;
+            height: 75px;
             }
 
             /* Additional styles for better visibility and consistency */
             .card-content {
-                border-radius: 20px;
+            border-radius: 20px;
             }
 
             .card-title {
-                font-size: 1.5rem;
+            font-size: 1.5rem;
             }
 
 

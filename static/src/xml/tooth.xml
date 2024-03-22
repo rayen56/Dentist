@@ -1,20 +1,21 @@
 <templates>
     <t t-name="ToothCust">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
         <div class="container pt-4 pb-4">
-            <div class="alert-container"></div>
+            <div class="alert-container"/>
             <div class="row">
                 <div class="col-md-12">
                     <h3>Tooth Custom</h3>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 order-md-2"><div class="card shadow-sm border-0 rounded-3"><div
-                        class="card-body py-4">
-                    <h5>Procedures</h5>
-                    <div class="Procedure_table_view"></div>
-                </div>
-                </div>
+                <div class="col-md-4 order-md-2">
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div
+                                class="card-body py-4">
+                            <h5>Procedures</h5>
+                            <div class="Procedure_table_view"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-8 order-2">
                     <div class="card shadow-sm border-0 rounded-3">
@@ -22,7 +23,8 @@
                             <h5>Tooth</h5>
                             <button class="button btn btn-outline-primary  save-button ">Save</button>
 
-                            <div class="py-2"></div> <div class="table_view tooth-table"></div>
+                            <div class="py-2"/>
+                            <div class="table_view tooth-table"/>
                         </div>
                         <div class="d-flex justify-content-center my-4">
                             <button class="btn btn-success mark-completed-button mr-2">Mark as Completed</button>
@@ -30,7 +32,7 @@
                         </div>
                     </div>
                     <div class="py-4">
-                        <div class="treatment_table_view"></div>
+                        <div class="treatment_table_view"/>
                     </div>
                 </div>
             </div>
@@ -54,7 +56,9 @@
             <t t-foreach="procedure_lines" t-as="data">
                 <button class="procedure_button btn btn-outline-dark shadow-sm border-0 rounded-3 mb-2"
                         t-att-data-id="data['id']" t-att-data-name="data['name']" t-att-data-cost="data['cost']">
-                    <t t-esc="data['display_name']"/> - Cost: <t t-esc="data['cost']"/>
+                    <t t-esc="data['display_name']"/>
+                    - Cost:
+                    <t t-esc="data['cost']"/>
                 </button>
             </t>
         </t>
@@ -77,21 +81,34 @@
                     <tbody>
                         <t t-foreach="treatment_lines" t-as="treatment">
                             <tr>
-                                <td><t t-esc="treatment.create_date"/></td>
-                                <td><t t-esc="treatment.universal_number"/></td>
-                                <td><t t-esc="treatment.procedure"/></td>
-                                <td><t t-esc="treatment.status"/></td>
-                                <td><t t-esc="treatment.cost"/></td>
+                                <td>
+                                    <t t-esc="treatment.create_date"/>
+                                </td>
+                                <td>
+                                    <t t-esc="treatment.universal_number"/>
+                                </td>
+                                <td>
+                                    <t t-esc="treatment.procedure"/>
+                                </td>
+                                <td>
+                                    <t t-esc="treatment.status"/>
+                                </td>
+                                <td>
+                                    <t t-esc="treatment.cost"/>
+                                </td>
                                 <td>
                                     <button class="btn btn-danger remove_tooth_button" t-att-data-id="treatment.id">
-                                        Delete</button>
+                                        Delete
+                                    </button>
                                 </td>
 
                             </tr>
                         </t>
                         <tr class="border-0">
-                            <td colspan="4"></td>
-                            <td>Total Cost: <t t-esc="totalCost"/></td>
+                            <td colspan="4"/>
+                            <td>Total Cost:
+                                <t t-esc="totalCost"/>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

@@ -17,6 +17,8 @@
         'views/procedure_view.xml',
         'views/treatment_data_view.xml',
         'views/dashboard_view.xml',
+        'security/security.xml',
+
     ],
     'qweb': ['static/src/xml/*.xml'],
     'installable': True,
