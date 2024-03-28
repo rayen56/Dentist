@@ -157,6 +157,7 @@
                                 </div>
                             </div>
                             <canvas id="revenue_chart" class="mt-5"></canvas>
+                            <p class="no-data-text"></p>
                         </div>
                     </div>
 
@@ -207,6 +208,15 @@
 
         </div>
         <style>
+            .no-data-text {
+            font-size: 20px; /* Increase font size */
+            font-weight: bold; /* Optionally, make the text bold for emphasis */
+            color: #777; /* Optionally, change text color to a muted gray */
+            text-align: center; /* Optionally, center-align the text */
+            margin-top: 10px; /* Optionally, add some top margin for spacing */
+            }
+
+
             .chart-btn {
             border-radius: 20px;
             }

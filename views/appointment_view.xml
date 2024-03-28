@@ -70,7 +70,6 @@
                                 <field name="appointment_end_date" string="End Date"/>
                             </group>
                             <group string="Additional Information">
-                                <field name="doctor_id" string="Assigned Doctor"/>
                                 <field name="notes" string="Notes"/>
                             </group>
                         </group>
@@ -91,15 +90,15 @@
                 <calendar string="Appointments"
                           date_start="appointment_date"
                           date_stop="appointment_end_date"
-                          color="appointment_type"
-                          form_view_id="dentist.appointment_form_view"
+                          color="patient_id"
+                          form_view_id="dentist.view_dentist_appointment_form"
                           event_open_popup="true"
                           quick_add="True"
                           mode="month"><field name="name"/>
+
                     <field name="appointment_date"/>
                     <field name="appointment_type"/>
                     <field name="patient_id"/>
-                    <field name="doctor_id"/>
                     <field name="notes"/>
                     <field name="state"/>
                 </calendar>
@@ -116,7 +115,6 @@
                     <field name="appointment_type"/>
                     <field name="appointment_date"/>
                     <field name="patient_id"/>
-                    <field name="doctor_id"/>
                     <field name="state"/>
                     <field name="notes"/>
                 </tree>
@@ -124,7 +122,7 @@
         </record>
 
         <record id="action_appointment_today" model="ir.actions.act_window">
-            <field name="name">Appointments Today</field>
+            <field name="name">Today Appointments</field>
             <field name="res_model">dentist.appointment</field>
             <field name="view_mode">tree,form,kanban,calendar</field>
             <field name="domain">
@@ -132,10 +130,7 @@
                  ('appointment_date', '>=', time.strftime('%Y-%m-%d 00:00:00'))]
             </field>
         </record>
-        <menuitem id="menu_appointments" name="Appointments" parent="menu_appointment"
-                  action="action_appointment" sequence="1"/>
-        <menuitem id="menu_appointment_today" name="Today Appointments" parent="menu_appointment"
-                  action="action_appointment_today" sequence="0"/>
+
 
         <record id="action_appointment" model="ir.actions.act_window">
             <field name="name">Appointments</field>
@@ -143,6 +138,5 @@
             <field name="view_mode">tree,form,kanban,calendar</field>
         </record>
 
-        <menuitem id="menu_appointment" name="Appointments" parent="menu_dentist_root_menu"/>
     </data>
 </odoo>

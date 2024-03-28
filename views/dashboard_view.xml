@@ -6,6 +6,5 @@
             <field name="target">main</field>
         </record>
 
-        <menuitem id="menu_my_dashboard" name="Dashboard" parent="menu_dentist_root_menu" action="action_my_dashboard" sequence="0"/>
     </data>
 </odoo>

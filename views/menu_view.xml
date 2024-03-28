@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main Menu Item for Dentist -->
+        <menuitem id="menu_dentist_root_menu" name="Dentist" sequence="1"/>
+
+        <!-- Dashboard Menu directly under Dentist for high visibility -->
+        <menuitem id="menu_my_dashboard" name="Dashboard" parent="menu_dentist_root_menu" action="action_my_dashboard" sequence="10"/>
+
+        <!-- Patients Menu under Dentist -->
+        <menuitem id="menu_patient" name="Patients" parent="menu_dentist_root_menu" action="action_patient" sequence="20"/>
+
+        <!-- Appointments Menu under Dentist -->
+        <menuitem id="menu_appointment" name="Appointments" parent="menu_dentist_root_menu" sequence="30"/>
+        <!-- Sub-menus for Appointments -->
+        <menuitem id="menu_appointment_today" name="Today Appointments" parent="menu_appointment" action="action_appointment_today" sequence="31"/>
+        <menuitem id="menu_appointments" name="All Appointments" parent="menu_appointment" action="action_appointment" sequence="32"/>
+
+        <!-- Treatments Menu under Dentist -->
+        <menuitem id="menu_treatments" name="Treatments" parent="menu_dentist_root_menu" sequence="40"/>
+        <!-- Sub-menus for Treatments -->
+        <menuitem id="treatment_menu" name="Treatment" parent="menu_treatments" action="action" sequence="41"/>
+        <menuitem id="menu_treatment_data" name="Treatment Data" parent="menu_treatments" action="action_treatment_data" sequence="42"/>
+
+        <!-- Configuration Menu under Dentist -->
+        <menuitem id="menu_configuration" name="Configuration" parent="menu_dentist_root_menu" sequence="50"/>
+        <!-- Sub-menus for Configuration -->
+        <menuitem id="menu_procedure" name="Procedures" parent="menu_configuration" action="action_procedure" sequence="51"/>
+        <menuitem id="menu_teeth" name="Teeth" parent="menu_configuration" action="action_teeth" sequence="52"/>
+    </data>
+</odoo>

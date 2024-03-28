@@ -21,7 +21,6 @@ class DentistAppointment(models.Model):
     appointment_end_date = fields.Datetime(string='Appointment End Date', store=True, track_visibility='onchange')
     patient_id = fields.Many2one('dentist.patient', string='Patient', required=True, track_visibility='onchange',
                                  ondelete='cascade')
-    doctor_id = fields.Many2one('res.users', string='Assigned Doctor', track_visibility='onchange')
     notes = fields.Text(string='Notes', track_visibility='onchange')
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -106,3 +105,4 @@ class DentistAppointment(models.Model):
         if vals.get('name', '/') == '/':
             vals['name'] = self.env['ir.sequence'].next_by_code('dentist.appointment') or '/'
         return super(DentistAppointment, self).create(vals)
+

@@ -28,10 +28,8 @@
                 <tree>
                     <field name="create_date"/>
                     <field name="patient_id"/>
-                    <field name="tooth_id"/>
                     <field name="universal_number"/>
                     <field name="procedure"/>
-                    <field name="status"/>
                     <field name="cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                     <field name="currency_id" invisible="1"/></tree>
             </field>
@@ -44,8 +42,6 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <!-- Menu for TreatmentData -->
-        <menuitem id="menu_treatment_data" name="Treatment Data" parent="menu_treatments"
-                  action="action_treatment_data"/>
+
     </data>
 </odoo>

@@ -18,6 +18,7 @@
         'views/treatment_data_view.xml',
         'views/dashboard_view.xml',
         'security/security.xml',
+        'views/menu_view.xml',
 
     ],
     'qweb': ['static/src/xml/*.xml'],

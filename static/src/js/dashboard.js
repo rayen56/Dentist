@@ -5,7 +5,7 @@ odoo.define('dentist.dashboard_cust', function (require) {
     var core = require('web.core');
     var rpc = require('web.rpc');
     var QWeb = core.qweb;
-
+    var _t = core._t;
 
     var MyDashboardAction = AbstractAction.extend({
         template: 'dentist_dashboard',
@@ -22,7 +22,6 @@ odoo.define('dentist.dashboard_cust', function (require) {
         },
         loadDashboardData: function () {
             var self = this;
-
             // Fetch Procedure Data
             self._rpc({
                 model: 'dentist.procedure',
@@ -56,21 +55,16 @@ odoo.define('dentist.dashboard_cust', function (require) {
                 var todayAppointmentCount = $('.todayAppointmentCount');
                 todayAppointmentCount.text(todayPatientData.length);
                 todayAppointmentList.empty();
-
                 if (todayPatientData.length > 0) {
                     var maxAppointments = 30;
                     var itemsPerPage = 6;
                     var totalPages = Math.ceil(todayPatientData.length / itemsPerPage);
                     var currentPage = 1;
-
                     displayAppointments(getAppointmentsForCurrentPage());
-
                     // Display pagination buttons
                     displayPaginationButtons();
-
                     // Update progress bar width and color based on the count of today's appointments
                     updateProgressBar(todayPatientData.length, maxAppointments);
-
                     // Event handlers for next and previous page buttons
                     $('.nextPageBtn').click(function () {
                         updatePage(1);
@@ -78,8 +72,22 @@ odoo.define('dentist.dashboard_cust', function (require) {
                     $('.prevPageBtn').click(function () {
                         updatePage(-1);
                     });
+                    self.$('.appointments-section').click(function () {
+                var today = new Date();
+                var startDate = today.toISOString().slice(0, 10) + ' 00:00:00';
+                var endDate = today.toISOString().slice(0, 10) + ' 23:59:59';
+
+                self.do_action({
+                    name: _t('Today Appointment'),
+                    type: 'ir.actions.act_window',
+                    res_model: 'dentist.appointment',
+                    views: [[false, 'list'], [false, 'form'], [false, 'kanban'], [false, 'calendar']],
+                    target: 'main',
+                    domain: [['appointment_date', '>=', startDate], ['appointment_date', '<=', endDate]], // Apply the domain filter
+                });
+            });
                 } else {
-                    todayAppointmentList.append('<li class="list-group-item text-center">No appointments for today</li>');
+                    todayAppointmentList.append('<li class="list-group-item text-center">' + _t('No appointments for today') + '</li>');
                     $('.pagination').hide();
                 }
 
@@ -322,7 +330,6 @@ odoo.define('dentist.dashboard_cust', function (require) {
                     method: 'get_revenue_breakdown',
                     args: [timeFrame],
                 }).then(function (revenueData) {
-
                     // Destroy existing chart if it exists
                     if (revenueChart) {
                         revenueChart.destroy();
@@ -331,13 +338,28 @@ odoo.define('dentist.dashboard_cust', function (require) {
                     // Extract data for the chart
                     var dates = Object.keys(revenueData);
                     var revenueValues = Object.values(revenueData);
-                    console.log(timeFrame, "Line Chart", dates, revenueValues)
 
-                    // Create a line chart for revenue breakdown
-                    configureAndRenderChart(dates, revenueValues);
-                    setActiveButton(timeFrame);
+                    if (revenueValues.length == 0) {
+                        // Update text when there's no data
+                        $('.no-data-text').text(_t('No data available for the selected time frame'));
+
+                        setActiveButton(timeFrame);
+
+                        // Hide canvas element
+                        $('revenue_chart').hide();
+                    } else {
+                        // Show canvas element
+                        $('revenue_chart').show();
+                        $('.no-data-text').text("");
+                        // Create a line chart for revenue breakdown
+                        configureAndRenderChart(dates, revenueValues);
+                        setActiveButton(timeFrame);
+                    }
+
+                    console.log(timeFrame, "Line Chart", dates, revenueValues);
                 });
             }
+
 
             // Function to configure and render the chart
             function configureAndRenderChart(labels, data) {
@@ -350,7 +372,7 @@ odoo.define('dentist.dashboard_cust', function (require) {
                     data: {
                         labels: filteredLabels, // Use the filtered labels
                         datasets: [{
-                            label: 'Total Earning',
+                            label: _t('Total Earning'),
                             data: filteredData, // Use the filtered data
                             fill: 'start',
                             pointRadius: 1,
@@ -397,7 +419,7 @@ odoo.define('dentist.dashboard_cust', function (require) {
             }
 
             // Initial chart load
-            fetchAndRenderChart('daily');
+            fetchAndRenderChart('monthly');
 
             // Button click event handlers
             self.$('.chart-btn').click(function () {
